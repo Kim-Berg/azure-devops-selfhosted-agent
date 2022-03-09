@@ -28,70 +28,38 @@ variable "subscription_id" {
   description = "Specifies the Azure subscription id where image should be saved"
 }
 
-# source block configures a specific builder plugin, which is then invoked by a build block.
-source "azure-arm" "agent-ubuntu" {
-  client_id       = var.client_id
-  client_secret   = var.client_secret
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-
-  managed_image_resource_group_name = "ben-packer-weeu-lab-001"
-  managed_image_name                = "adolinux-img-weeu-lab-001"
-
-  os_type         = "Linux"
-  image_publisher = "Canonical"
-  image_offer     = "UbuntuServer"
-  image_sku       = "18.04-LTS"
-
-  location = "West Europe"
-  vm_size  = "Standard_B1s"
-}
-
 source "azure-arm" "agent-windows" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
 
-  managed_image_resource_group_name = "ben-packer-weeu-lab-001"
-  managed_image_name                = "adowindows-img-weeu-lab-001"
+  managed_image_storage_account_type = "Standard_LRS"
+  managed_image_resource_group_name  = "ben-packer-weeu-lab-001"
+  managed_image_name                 = "adowindows-img-weeu-lab-001"
+
 
   os_type         = "Windows"
   image_publisher = "MicrosoftWindowsServer"
   image_offer     = "WindowsServer"
   image_sku       = "2019-Datacenter-Core"
+  image_version   = "17763.737.1909062324"
 
   location = "West Europe"
-  vm_size  = "Standard_B1s"
+  vm_size  = "Standard_D2_v2"
+
+  communicator   = "winrm"
+  winrm_insecure = true
+  winrm_username = "packer"
+  winrm_use_ssl  = true
 }
 
 # The build block defines what Packer should do with the Docker container after it launches.
 build {
   name = "learn-packer"
   sources = [
-    "source.azure-arm.agent-ubuntu",
-    "source.azure-arm.agent-windows",
+    "source.azure-arm.agent-windows"
   ]
-
-  provisioner "ansible" {
-    playbook_file = "./playbooks/linux.yml"
-    only           = ["azure.agent-ubuntu"]
-  }
-
-  provisioner "ansible" {
-    playbook_file = "./playbooks/windows.yml"
-    only           = ["azure.agent-ubuntu"]
-  }
-
-  provisioner "shell" {
-    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-    inline = [
-      "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
-    ]
-    inline_shebang = "/bin/sh -x"
-    only           = ["azure.agent-ubuntu"]
-  }
-
 
   provisioner "powershell" {
     inline = [
@@ -103,7 +71,6 @@ build {
       "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /quiet /quit /mode:vm",
       "while($true) { $imageState = Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Setup\\State | Select ImageState; if($imageState.ImageState -ne 'IMAGE_STATE_GENERALIZE_RESEAL_TO_OOBE') { Write-Output $imageState.ImageState; Start-Sleep -s 10  } else { break } }"
     ]
-    only = ["azure.agent-windows"]
   }
 
 
