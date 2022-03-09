@@ -42,8 +42,8 @@ source "azure-arm" "agent-windows" {
   os_type         = "Windows"
   image_publisher = "MicrosoftWindowsServer"
   image_offer     = "WindowsServer"
-  image_sku       = "2019-Datacenter-Core"
-  image_version   = "17763.737.1909062324"
+  image_sku       = "2022-datacenter"
+  image_version   = "20348.587.220303"
 
   location = "West Europe"
   vm_size  = "Standard_D2_v2"
@@ -61,18 +61,14 @@ build {
     "source.azure-arm.agent-windows"
   ]
 
-  provisioner "powershell" {
-    inline = [
-      " # NOTE: the following *3* lines are only needed if the you have installed the Guest Agent.",
-      "  while ((Get-Service RdAgent).Status -ne 'Running') { Start-Sleep -s 5 }",
-      "  while ((Get-Service WindowsAzureTelemetryService).Status -ne 'Running') { Start-Sleep -s 5 }",
-      "  while ((Get-Service WindowsAzureGuestAgent).Status -ne 'Running') { Start-Sleep -s 5 }",
-
-      "& $env:SystemRoot\\System32\\Sysprep\\Sysprep.exe /oobe /generalize /quiet /quit /mode:vm",
-      "while($true) { $imageState = Get-ItemProperty HKLM:\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Setup\\State | Select ImageState; if($imageState.ImageState -ne 'IMAGE_STATE_GENERALIZE_RESEAL_TO_OOBE') { Write-Output $imageState.ImageState; Start-Sleep -s 10  } else { break } }"
+  provisioner "ansible" {
+    playbook_file = "./playbooks/windows.yml"
+    extra_arguments = [
+      "--extra-vars @playbooks/vars/windows-vars.yaml"
+    ]
+    ansible_env_vars = [
+      "WINRM_PASSWORD={{.WinRMPassword}}"
     ]
   }
-
-
 }
 
