@@ -1,0 +1,11 @@
+---
+- hosts: all
+  tasks:
+  - include_role:
+      name: linux-agent
+    when: (ansible_facts['ansible_os_family'] | lower == "debian") or
+          (ansible_facts['ansible_os_family'] | lower == "redhat")
+          
+  - include_role:
+      name: windows-agent
+    when: ansible_facts['ansible_os_family'] | lower == "windows"

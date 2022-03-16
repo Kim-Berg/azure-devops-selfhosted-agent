@@ -1,0 +1,7 @@
+---
+# tasks file for linux-agent
+- name: Update all packages to their latest version
+  apt:
+    name: "*"
+    state: latest
+    force_apt_get: true
