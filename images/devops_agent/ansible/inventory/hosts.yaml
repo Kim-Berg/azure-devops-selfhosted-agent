@@ -2,7 +2,7 @@
 local_debugging:
   hosts:
     linux-ansible-target:
-      ansible_host: 52.137.14.114
+      ansible_host: 20.229.61.140
       ansible_ssh_user: azureuser
       ansible_connection: ssh
       ansible_become: true

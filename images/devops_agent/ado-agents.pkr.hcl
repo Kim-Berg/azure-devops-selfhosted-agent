@@ -52,14 +52,28 @@ build {
   name = "learn-packer"
   sources = [
     "source.azure-arm.agent-ubuntu"
+    "source.azure-arm.agent-windows"
   ]
 
-  provisioner "shell" {
-    execute_command = "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'"
-    inline = [
-      "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+  provisioner "ansible" {
+      use_proxy               = false
+      playbook_file           = "./ansible/playbook.yml"
+      ansible_env_vars        = ["PACKER_BUILD_NAME={{ build_name }}"]
+      inventory_file_template = "{{ .HostAlias }} ansible_host={{ .ID }} ansible_user={{ .User }} ansible_ssh_common_args='-o StrictHostKeyChecking=no -o'\n"
+
+      only = ["source.azure-arm.agent-ubuntu"]
+    }
+
+  provisioner "ansible" {
+    playbook_file   = "./ansible/playbook.yml"
+    user            = "Administrator"
+    use_proxy       = false
+    extra_arguments = [
+      "-e",
+      "ansible_winrm_server_cert_validation=ignore"
     ]
-    inline_shebang = "/bin/sh -x"
+
+    only = ["source.azure-arm.agent-windows"]
   }
 }
 

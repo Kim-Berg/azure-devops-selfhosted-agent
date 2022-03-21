@@ -1,7 +1,36 @@
 ---
 # tasks file for linux-agent
-- name: Update all packages to their latest version
+- name: Update base system packages
   apt:
-    name: "*"
+    name: "{{ item }}"
     state: latest
     force_apt_get: true
+    update_cache: true
+  loop: "{{ system_packages }}"
+
+- name: Print return information from the previous task
+  ansible.builtin.debug:
+    var: install_gpg
+    verbosity: 2
+
+- name: Install gpg keys
+  ansible.builtin.apt_key:
+    url: "{{ item.url }}"
+    state: present
+    keyring: "{{ item.keyring }}"
+  loop: "{{ install_gpg }}"
+
+- name: Add repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item.content }}"
+    filename: "{{ item.filename }}"
+    state: present
+  loop: "{{ install_repositories }}"
+
+- name: Update devops agent specific packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    force_apt_get: true
+    update_cache: true
+  loop: "{{ install_packages }}"
