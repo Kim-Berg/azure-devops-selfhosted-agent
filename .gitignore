@@ -11,3 +11,5 @@ crash.log
 # ansible
 *retry
 hosts.yaml
+
+local_debug*

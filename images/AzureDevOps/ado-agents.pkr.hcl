@@ -7,6 +7,11 @@ packer {
   }
 }
 
+variable "ansible_playbook_path" {
+  type = string
+  description = "Specifies where ansible playbooks are located"
+}
+
 variable "client_id" {
   type        = string
   description = "Specifies the service principal client-id"
@@ -117,8 +122,8 @@ build {
 
   provisioner "ansible" {
     use_proxy               = false
-    playbook_file           = "ansible/playbook.yaml"
-    inventory_directory     = "ansible/"
+    playbook_file           = "${var.ansible_playbook_path}/playbook.yaml"
+    inventory_directory     = "${var.ansible_playbook_path}/"
     inventory_file_template = "{{ .HostAlias }} ansible_host={{ .Host }} ansible_user={{ .User }} ansible_port={{ .Port }} ansible_become=true"
     only                    = ["azure-arm.agent-ubuntu"]
   }

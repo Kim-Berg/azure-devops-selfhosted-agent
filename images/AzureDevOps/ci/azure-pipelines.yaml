@@ -18,7 +18,7 @@ variables:
     - name: env
       value: dev
 
-    - name: azure_subscription
+    - name: service_connection
       value: 'azure-devops-demo-sp'
 
     - name: packer_resource_group_name
@@ -30,28 +30,40 @@ variables:
     - group: 'service-connection-credentials'
 
 stages:
-  - stage: 'Build'
-    displayName: 'BuildImages'
+  - stage: RunPacker
     jobs:
-      - job: "PackerBuild"
-        continueOnError: false
-        steps:
+    - job: CreateImage
+      steps:
+      - task: riezebosch.Packer.PackerTool.PackerTool@0
+        displayName: 'Use Packer Latest'
 
-        - checkout: self
-          persistCredentials: true
-          clean: true
-          
-        - task: PackerBuild@1
-          inputs:
-            templateType: 'custom'
-            customTemplateLocation: '../ado-agents.pkr.hcl'
-            customTemplateParameters: | 
-              {
-               -var client_id=$(svc-azr-devops-client-id) 
-               -var client_secret=$(svc-azr-devops-client-secret) 
-               -var tenant_id=$(svc-azr-devops-tenant-id) 
-               -var subscription_id=$(svc-azr-devops-subscription-id)
-               -var resource_group_name=$(packer_resource_group_name)
-               -var env=$(env)
-               -var location=$(location)
-              }
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer version'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          command: version
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer init'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          command: init
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer validate'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          command: validate
+          variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          variables: 'ansible_playbook_path="$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'    
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer build'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          variables: 'ansible_playbook_path="$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'      
