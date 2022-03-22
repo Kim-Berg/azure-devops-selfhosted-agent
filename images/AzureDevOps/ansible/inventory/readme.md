@@ -2,6 +2,7 @@ add a hosts file for local debugging purposes
 
 
 sample file:
+```
 ---
 local_debugging:
   hosts:
@@ -17,3 +18,4 @@ local_debugging:
       ansible_connection: winrm
       ansible_winrm_user: azureuser
       ansible_winrm_server_cert_validation: ignore
+```
