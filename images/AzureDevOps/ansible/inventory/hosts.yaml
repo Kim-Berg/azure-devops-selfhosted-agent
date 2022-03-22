@@ -2,14 +2,14 @@
 local_debugging:
   hosts:
     linux-ansible-target:
-      ansible_host: 20.229.61.140
+      ansible_host: 
       ansible_ssh_user: azureuser
       ansible_connection: ssh
       ansible_become: true
     windows-ansible-target:
-      ansible_host: 20.229.8.86
+      ansible_host: 
       ansible_user: azureuser
-      ansible_password: "h9HwYDAvMW3hDA5U2U"
+      ansible_password: 
       ansible_connection: winrm
       ansible_winrm_user: azureuser
       ansible_winrm_server_cert_validation: ignore

@@ -7,4 +7,6 @@ crash.log
 # For built boxes
 *.box
 
-service-principal*
+
+# ansible
+*retry

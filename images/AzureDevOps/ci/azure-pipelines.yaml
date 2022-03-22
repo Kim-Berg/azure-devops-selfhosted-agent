@@ -1,0 +1,57 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  branches:
+    include:
+    - main
+
+pool:
+  name: "Azure Pipelines"
+  vmImage: 'ubuntu-18.04'
+
+variables:
+    # ------ Do change variables below --------
+    # See "service connections" under Azure DevOps organization settings
+    - name: env
+      value: dev
+
+    - name: azure_subscription
+      value: 'azure-devops-demo-sp'
+
+    - name: packer_resource_group_name
+      value: "ben-packer-weeu-lab-001"
+
+    - name: location
+      value: "westeurope"
+
+    - group: 'service-connection-credentials'
+
+stages:
+  - stage: 'Build'
+    displayName: 'BuildImages'
+    jobs:
+      - job: "PackerBuild"
+        continueOnError: false
+        steps:
+
+        - checkout: self
+          persistCredentials: true
+          clean: true
+          
+        - task: PackerBuild@1
+          inputs:
+            templateType: 'custom'
+            customTemplateLocation: '../ado-agents.pkr.hcl'
+            customTemplateParameters: | 
+              {
+               -var client_id=$(svc-azr-devops-client-id) 
+               -var client_secret=$(svc-azr-devops-client-secret) 
+               -var tenant_id=$(svc-azr-devops-tenant-id) 
+               -var subscription_id=$(svc-azr-devops-subscription-id)
+               -var resource_group_name=$(packer_resource_group_name)
+               -var env=$(env)
+               -var location=$(location)
+              }

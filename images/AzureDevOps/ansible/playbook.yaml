@@ -1,5 +1,6 @@
 ---
-- hosts: linux-ansible-target
+- name: 'Provision Image'
+  hosts: all
   tasks:
   - include_role:
       name: linux-agent
@@ -25,12 +26,14 @@
         - name: azure-cli
           content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
           filename: azure-cli.list
-          
+
       install_packages:
           - git
           - make
           - azure-cli
-          - docker
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
         
     when: (ansible_facts['os_family'] | lower == "debian") or
           (ansible_facts['os_family'] | lower == "redhat")

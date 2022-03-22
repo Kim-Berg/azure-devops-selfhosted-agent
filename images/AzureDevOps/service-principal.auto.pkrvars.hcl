@@ -1,0 +1,7 @@
+client_id="7dce57ff-823b-4f82-9eca-11d443b49a72"
+client_secret="cSD7Q~d5eilTu~e-LBOi4TA5YvBb.ENWGwPkT"
+tenant_id="2db9b5b0-add1-47fc-a0ca-147745edf2f9"
+subscription_id="29c25af1-9bcd-4aab-960d-5665914cb916"
+env="lab"
+resource_group_name="ben-packer-weeu-lab-001"
+location="westeurope"
