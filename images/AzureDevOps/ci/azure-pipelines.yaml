@@ -10,7 +10,7 @@ trigger:
 
 pool:
   name: "Azure Pipelines"
-  vmImage: 'ubuntu-18.04'
+  vmImage: 'ubuntu-20.04'
 
 variables:
     # ------ Do change variables below --------
@@ -58,7 +58,7 @@ stages:
           templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
           command: validate
           variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
-          variables: 'ansible_playbook_path="$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'    
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'    
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer build'
@@ -66,4 +66,4 @@ stages:
           azureSubscription: '$(service_connection)'
           templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
           variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
-          variables: 'ansible_playbook_path="$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'      
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'      

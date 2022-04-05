@@ -35,8 +35,7 @@
           - docker-ce-cli
           - containerd.io
         
-    when: (ansible_facts['os_family'] | lower == "debian") or
-          (ansible_facts['os_family'] | lower == "redhat")
+    when: (ansible_facts['os_family'] | lower == "debian")
           
   - include_role:
       name: windows-agent
