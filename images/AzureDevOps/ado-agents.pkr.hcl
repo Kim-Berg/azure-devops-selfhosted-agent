@@ -45,6 +45,16 @@ variable "resource_group_name" {
   description = "Specifies the resource group name used where image is saved"
 }
 
+variable "target_scale_set_name" {
+  type        = string
+  description = ""
+}
+
+variable "target_scale_set_rg" {
+  type        = string
+  description = ""
+}
+
 variable "env" {
   type        = string
   description = "Specifies the lifecycle notation used in image name"
@@ -62,6 +72,8 @@ locals {
     "westus"      = "weus",
     "westus"      = "weus"
   }
+  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  managed_image_name_windows = "adowindows-img-${local.location_abbreviations[var.location]}-${var.env}-001"
 }
 
 # source block configures a specific builder plugin, which is then invoked by a build block.
@@ -72,7 +84,7 @@ source "azure-arm" "agent-ubuntu" {
   subscription_id = var.subscription_id
 
   managed_image_resource_group_name = var.resource_group_name
-  managed_image_name                = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  managed_image_name                = local.managed_image_name_linux
 
   os_type         = "Linux"
   image_publisher = "Canonical"
@@ -82,6 +94,7 @@ source "azure-arm" "agent-ubuntu" {
   location = "West Europe"
   vm_size  = "Standard_B1s"
 }
+
 
 // source "azure-arm" "agent-windows" {
 //   client_id       = var.client_id
@@ -108,6 +121,7 @@ source "azure-arm" "agent-ubuntu" {
 //   winrm_username = "packer"
 //   winrm_use_ssl  = true
 // }
+
 
 # The build block defines what Packer should do with the Docker container after it launches.
 build {
@@ -139,5 +153,14 @@ build {
 
   //   only = ["azure-arm.agent-windows"]
   // }
-}
 
+  post-processor "manifest" {
+      output = "manifest.json"
+      strip_path = true
+      custom_data = {
+          source_image_name = "${build.SourceImageName}"
+          target_vmss_name = "${var.target_scale_set_name}"
+          target_vmss_rg = "${var.target_scale_set_rg}"
+      }
+  }
+}

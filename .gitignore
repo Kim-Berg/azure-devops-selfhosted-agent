@@ -12,4 +12,6 @@ crash.log
 *retry
 hosts.yaml
 
+# packer
+manifest.json
 local_debug*
