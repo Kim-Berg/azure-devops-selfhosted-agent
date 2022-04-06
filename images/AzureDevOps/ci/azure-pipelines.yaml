@@ -61,7 +61,7 @@ stages:
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: 'ado-agents.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
           variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/images/AzureDevOps/ansible'
           force: true
