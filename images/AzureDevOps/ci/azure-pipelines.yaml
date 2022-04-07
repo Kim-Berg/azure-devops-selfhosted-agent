@@ -15,16 +15,8 @@ pool:
 variables:
     # ------ Do change variables below --------
     # See "service connections" under Azure DevOps organization settings
-    - name: env
-      value: dev
-
     - name: service_connection
       value: 'gold-partner-subscription'
-
-    - name: location
-      value: "westeurope"
-
-    - group: 'service-connection-credentials'
 
 stages:
   - stage: Build
