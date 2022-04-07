@@ -4,6 +4,7 @@
 
 # Metadata
 #   description: Read and parse manifest file created by packer post-processor
+#       This script is used as an inline script in the CI pipelines. The reason why it is kept here to for local debugging purposes.
 #   creator: ben@kooijman.se
 #   date: 2022-04-06
 
@@ -26,8 +27,8 @@ COLOUR='\033[1;32m' # Green
 NC='\033[0m' # No Color
 
 IMAGE_ID=$(jq '.builds[0].artifact_id' ${MANIFEST_PATH} | tr -d '"')
-VMSS_NAME=$(jq '.builds[0].custom_data.target_vmss_name' ${MANIFEST_PATH})
-VMSS_RG=$(jq '.builds[0].custom_data.target_vmss_rg' ${MANIFEST_PATH})
+VMSS_NAME=$(jq '.builds[0].custom_data.target_vmss_name' ${MANIFEST_PATH} | tr -d '"')
+VMSS_RG=$(jq '.builds[0].custom_data.target_vmss_rg' ${MANIFEST_PATH} | tr -d '"')
 
 printf "______ ${COLOUR}Current Settings${NC} ______\n"
 printf "MANIFEST_PATH..${COLOUR}${MANIFEST_PATH}${NC}\n"

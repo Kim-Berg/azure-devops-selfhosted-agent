@@ -1,5 +1,14 @@
 # azure-devops-selfhosted-agent
-Fully desired state managed self hosted azure devops agent
+Fully desired state managed self hosted azure devops agent.
+I created this project because I needed a way control the dependencies on my self-hosted build agents with immutable images.
+
+# Features
+
+* Create immutable images for VMSS hosted build agents
+* Automated building of images and re-imaging of exising virtual machine scale sets
+* Support for several self hosted build agent providers (github, ado etc.) (**todo**)
+* Supports Windows and Ubuntu images (**todo**)
+* Input is controlled with DaC (Data as Config) (**todo**)
 
 # Tooling
 

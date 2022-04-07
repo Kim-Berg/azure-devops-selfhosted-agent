@@ -88,8 +88,8 @@ source "azure-arm" "agent-ubuntu" {
 
   os_type         = "Linux"
   image_publisher = "Canonical"
-  image_offer     = "UbuntuServer"
-  image_sku       = "18.04-LTS"
+  image_offer     = "0001-com-ubuntu-server-focal"
+  image_sku       = "20_04-lts-gen2"
 
   location = "West Europe"
   vm_size  = "Standard_B1s"
