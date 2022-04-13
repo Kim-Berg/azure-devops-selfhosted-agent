@@ -29,8 +29,8 @@
 
 - name: Update devops agent specific packages
   apt:
-    name: "{{ item }}"
+    name: "{{ item.name }}={{ item.version }}"
     state: latest
     force_apt_get: true
     update_cache: true
-  loop: "{{ install_packages }}"
+  loop: "{{ install_apt_packages }}"

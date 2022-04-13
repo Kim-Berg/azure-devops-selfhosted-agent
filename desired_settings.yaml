@@ -1,0 +1,49 @@
+---
+azure:
+  environment: lab
+
+scale_set:
+  new_instance: false
+  settings:
+    resource_group: General_Ben
+    name: "ado-agent-lab"
+
+platform: 
+  type: AzureDevOps
+
+builds:
+  environment: lab
+  resource_group: "General_Ben"
+  location: "westeurope"
+  linux:
+    enable: true
+    settings:
+      image_offer: 0001-com-ubuntu-server-focal
+      gpg_packages:
+        - name: docker
+          url: https://download.docker.com/linux/ubuntu/gpg
+          keyring: /usr/share/keyrings/docker-archive-keyring.gpg
+        - name: azure-cli
+          url: https://packages.microsoft.com/keys/microsoft.asc
+          keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
+      repositories:
+        - name: docker
+          content: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable"
+          filename: docker.list
+        - name: azure-cli
+          content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
+          filename: azure-cli.list
+      packages:
+        - 
+
+  windows:
+    enable: true
+    settings:
+      powershell_modules:
+        - name: Az
+          version: latest
+      choco_packages:
+        - name: git
+          version: '2.35.2'
+        - name: azure-cli
+          version: '2.35.0' 

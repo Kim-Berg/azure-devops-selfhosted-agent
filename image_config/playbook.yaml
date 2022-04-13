@@ -1,6 +1,6 @@
 ---
 - name: 'Provision Image'
-  hosts: all
+  hosts: windows
   tasks:
   - include_role:
       name: linux-agent
@@ -27,20 +27,32 @@
           content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
           filename: azure-cli.list
 
-      install_packages:
-          - git
-          - make
-          - azure-cli
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
+      install_apt_packages:
+           # escape asterisk means latest version in aptitude world
+          - name: git
+            version: \*
+          - name: make
+            version: \*
+          - name: azure-cli
+            version: \*
+          - name: docker-ce
+            version: \*
+          - name: docker-ce-cli
+            version: \*
+          - name: containerd.io
+            version: \*
         
     when: (ansible_facts['os_family'] | lower == "debian")
           
   - include_role:
       name: windows-agent
     vars:
-      install_packages:
-        - git
-        - azure-cli
+      powershell_modules:
+        - name: Az
+          version: "7.4.0"
+      choco_packages:
+        - name: git
+          version: '2.35.2'
+        - name: azure-cli
+          version: '2.35.0'
     when: ansible_facts['os_family'] | lower == "windows"

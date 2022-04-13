@@ -1,0 +1,22 @@
+---
+# tasks file for windows-agent
+- name: Install chocolatey
+  win_chocolatey:
+      name:
+        - chocolatey
+        - chocolatey-core.extension
+      state: present
+
+- name: Install multiple packages sequentially with chocolatey
+  win_chocolatey:
+    name: '{{ item.name }}'
+    version: '{{ item.version }}'
+    state: present
+  loop: '{{ choco_packages }}'
+
+- name: Add desired PowerShell modulel
+  community.windows.win_psmodule:
+    name: '{{ item.name }}'
+    state: present
+    required_version: "{{ item.version }}"
+  loop: '{{ powershell_modules }}'
