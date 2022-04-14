@@ -5,12 +5,17 @@
   - include_role:
       name: linux-agent
     vars:
+      # this regex is used to strip single and multi dimention file extentions from filenames
+      # - file1.tar
+      # - file2.tar.gz
+      # - file3.tar.bz2.back
+      # - a_weird_file.name.with.too.many.dots
+      file_regex: >-
+        ^([^\.]*).*
       # these are packages that need to be compiled from source
       install_from_source:
         - name: python36
           url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
-          configure_flags: ['--enable-optimizations']
-          install_file: altinstall
 
       # these are scripts that are directly installed after retrieving them
       install_scripts:
