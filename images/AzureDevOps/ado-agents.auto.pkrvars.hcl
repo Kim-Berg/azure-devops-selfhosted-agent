@@ -1,5 +1,0 @@
-env="lab"
-resource_group_name="General_Ben"
-location="westeurope"
-target_scale_set_name="ado-agent-lab"
-target_scale_set_rg="General_Ben"

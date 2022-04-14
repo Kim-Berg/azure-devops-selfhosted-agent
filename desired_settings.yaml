@@ -1,6 +1,7 @@
 ---
 azure:
   environment: lab
+  location: "westeurope"
 
 scale_set:
   new_instance: false
@@ -12,9 +13,10 @@ platform:
   type: AzureDevOps
 
 builds:
-  environment: lab
-  resource_group: "General_Ben"
-  location: "westeurope"
+  target_resource_group: "General_Ben"
+  # toggle weither to use location or target resource group
+  # for build. This choice depends on RBAC scope.
+  use_target_rg_for_build: true
   linux:
     enable: true
     settings:
@@ -33,12 +35,12 @@ builds:
         - name: azure-cli
           content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
           filename: azure-cli.list
-      packages:
-        - 
+      packages: []
 
   windows:
     enable: true
     settings:
+      image_offer: 2022-datacenter
       powershell_modules:
         - name: Az
           version: latest

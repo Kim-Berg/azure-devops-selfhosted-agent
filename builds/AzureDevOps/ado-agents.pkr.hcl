@@ -7,6 +7,11 @@ packer {
   }
 }
 
+variable "create_new_scale_set" {
+  type = bool
+  description = "Is only written to manifest.json in order to control automation"
+}
+
 variable "ansible_playbook_path" {
   type = string
   description = "Specifies where ansible playbooks are located"
@@ -72,7 +77,7 @@ locals {
     "westus"      = "weus",
     "westus"      = "weus"
   }
-  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-002"
   managed_image_name_windows = "adowindows-img-${local.location_abbreviations[var.location]}-${var.env}-001"
 }
 
@@ -83,6 +88,7 @@ source "azure-arm" "agent-ubuntu" {
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
 
+  build_resource_group_name = var.resource_group_name
   managed_image_resource_group_name = var.resource_group_name
   managed_image_name                = local.managed_image_name_linux
 
@@ -91,7 +97,6 @@ source "azure-arm" "agent-ubuntu" {
   image_offer     = "0001-com-ubuntu-server-focal"
   image_sku       = "20_04-lts-gen2"
 
-  location = "West Europe"
   vm_size  = "Standard_B1s"
 }
 

@@ -8,6 +8,27 @@
     update_cache: true
   loop: "{{ system_packages }}"
 
+- name: download packages that are compiled from source
+  get_url:
+    url: "{{ item.url }}"
+    dest: /tmp/
+    mode: '0440'
+  loop: "{{ install_from_source }}"
+
+- name: unpack tarballs before compiling from source
+  ansible.builtin.unarchive:
+    src: "{{ item.url | split('/') | last }}"
+    dest: /tmp
+    remote_src: yes
+  loop: "{{ install_from_source }}"
+
+- name: compile packages
+  command: |
+    cd /tmp/{{ item.url | split('/') | last }}
+    ./configure {{ item.configure_flags | join(' ') }}
+    make {{ item.install_file }}
+  loop: "{{ install_from_source }}"
+
 - name: Print return information from the previous task
   ansible.builtin.debug:
     var: install_gpg
@@ -29,8 +50,8 @@
 
 - name: Update devops agent specific packages
   apt:
-    name: "{{ item.name }}={{ item.version }}"
-    state: latest
+    name: "{{ item.name }}"
+    state: present
     force_apt_get: true
     update_cache: true
   loop: "{{ install_apt_packages }}"

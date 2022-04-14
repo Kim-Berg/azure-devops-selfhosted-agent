@@ -1,14 +1,23 @@
 ---
 - name: 'Provision Image'
-  hosts: windows
+  hosts: linux-target
   tasks:
   - include_role:
       name: linux-agent
     vars:
+      # these are packages that need to be compiled from source
+      install_from_source:
+        - name: python36
+          url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
+          configure_flags: ['--enable-optimizations']
+          install_file: altinstall
+
+      # these are scripts that are directly installed after retrieving them
       install_scripts:
         - name: docker-compose
           url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
 
+      # these are gpg keys that must be installed before installing from repositories
       install_gpg:
         - name: docker
           url: https://download.docker.com/linux/ubuntu/gpg
@@ -16,7 +25,7 @@
         - name: azure-cli
           url: https://packages.microsoft.com/keys/microsoft.asc
           keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
-
+      # these are repositories necessary to add before installing packages
       install_repositories:
         # repositories that should be installed on host
         # "dest" keys denote where the repository renty is stored on filesystem
@@ -26,21 +35,21 @@
         - name: azure-cli
           content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
           filename: azure-cli.list
-
+      # these are packages necessary to install
       install_apt_packages:
-           # escape asterisk means latest version in aptitude world
+           # asterisk means latest version in aptitude world
           - name: git
-            version: \*
+            version: '*'
           - name: make
-            version: \*
+            version: '*'
           - name: azure-cli
-            version: \*
+            version: '*'
           - name: docker-ce
-            version: \*
+            version: '*'
           - name: docker-ce-cli
-            version: \*
+            version: '*'
           - name: containerd.io
-            version: \*
+            version: '*'
         
     when: (ansible_facts['os_family'] | lower == "debian")
           
