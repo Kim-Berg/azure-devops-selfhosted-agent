@@ -1,3 +1,7 @@
+# Notice
+
+This is a work in progress project! This means that some documentation is wrong and code do not work as intended yet
+
 # azure-devops-selfhosted-agent
 Fully desired state managed self hosted azure devops agent.
 I created this project because I needed a way control the dependencies on my self-hosted build agents with immutable images.
