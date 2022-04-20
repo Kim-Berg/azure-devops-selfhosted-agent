@@ -15,3 +15,5 @@ hosts.yaml
 # packer
 manifest.json
 local_debug*
+
+*.json
