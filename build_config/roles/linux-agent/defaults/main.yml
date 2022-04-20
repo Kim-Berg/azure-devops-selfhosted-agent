@@ -5,7 +5,6 @@ system_packages:
   - curl 
   - apt-transport-https
   - lsb-release
-  - gnupg
   - build-essential
   - checkinstall
   - libreadline-gplv2-dev 

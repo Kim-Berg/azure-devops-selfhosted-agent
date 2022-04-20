@@ -1,6 +1,6 @@
 ---
 - name: 'Provision Image'
-  hosts: linux-target
+  hosts: all
   tasks:
   - include_role:
       name: linux-agent
@@ -21,6 +21,7 @@
       install_scripts:
         - name: docker-compose
           url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
+          dst_folder: /usr/local/bin/docker-compose
 
       # these are gpg keys that must be installed before installing from repositories
       install_gpg:

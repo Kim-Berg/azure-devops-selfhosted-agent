@@ -1,0 +1,1 @@
+default ansible_host=13.93.71.120 ansible_user=packer ansible_port=22 ansible_become=true

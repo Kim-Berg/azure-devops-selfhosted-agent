@@ -7,14 +7,10 @@ packer {
   }
 }
 
-variable "create_new_scale_set" {
-  type = bool
-  description = "Is only written to manifest.json in order to control automation"
-}
-
 variable "ansible_playbook_path" {
   type = string
   description = "Specifies where ansible playbooks are located"
+  default=false
 }
 
 variable "client_id" {
@@ -77,8 +73,10 @@ locals {
     "westus"      = "weus",
     "westus"      = "weus"
   }
-  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-002"
+  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-001"
   managed_image_name_windows = "adowindows-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  blue_green_img_linux       = "linuxbg-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  blue_green_img_windows     = "windowsbg-img-${local.location_abbreviations[var.location]}-${var.env}-001"
 }
 
 # source block configures a specific builder plugin, which is then invoked by a build block.
@@ -91,6 +89,24 @@ source "azure-arm" "agent-ubuntu" {
   build_resource_group_name = var.resource_group_name
   managed_image_resource_group_name = var.resource_group_name
   managed_image_name                = local.managed_image_name_linux
+
+  os_type         = "Linux"
+  image_publisher = "Canonical"
+  image_offer     = "0001-com-ubuntu-server-focal"
+  image_sku       = "20_04-lts-gen2"
+
+  vm_size  = "Standard_B1s"
+}
+
+source "azure-arm" "agent-ubuntu-bg" {
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
+
+  build_resource_group_name = var.resource_group_name
+  managed_image_resource_group_name = var.resource_group_name
+  managed_image_name                = local.blue_green_img_linux
 
   os_type         = "Linux"
   image_publisher = "Canonical"
@@ -132,12 +148,9 @@ source "azure-arm" "agent-ubuntu" {
 build {
   name = "learn-packer"
   sources = [
-    "source.azure-arm.agent-ubuntu"
+    "source.azure-arm.agent-ubuntu",
+    "source.azure-arm.agent-ubuntu-bg"
   ]
-  // sources = [
-  //   "source.azure-arm.agent-ubuntu",
-  //   "source.azure-arm.agent-windows"
-  // ]
 
   provisioner "ansible" {
     use_proxy               = false

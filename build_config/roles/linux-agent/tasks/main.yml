@@ -1,12 +1,20 @@
 ---
 # tasks file for linux-agent
-# - name: Update base system packages
-#   apt:
-#     name: "{{ item }}"
-#     state: latest
-#     force_apt_get: true
-#     update_cache: true
-#   loop: "{{ system_packages }}"
+- name: Update base system packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+    force_apt_get: true
+    update_cache: true
+  loop: "{{ system_packages }}"
+
+- name: download scripts and place them in path
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dst_folder }}"
+    mode: '0555'
+    force: yes
+  loop: "{{ install_scripts }}"
 
 - name: download packages that are compiled from source
   get_url:
@@ -32,7 +40,8 @@
 - name: compile packages
   ansible.builtin.command:
     argv:
-      - ./configure --enable-optimizations
+      - ./configure 
+      - --enable-optimizations
   args:
     chdir: /tmp/{{ item.url.split('/') | last | regex_replace(file_regex, '\1') }}
   loop: "{{ install_from_source }}"
@@ -40,7 +49,8 @@
 - name: make packages
   ansible.builtin.command:
     argv:
-      - make
+      - make 
+      - altinstall
   args:
     chdir: /tmp/{{ item.url.split('/') | last | regex_replace(file_regex, '\1') }}
   loop: "{{ install_from_source }}"
@@ -50,7 +60,7 @@
     var: install_gpg
     verbosity: 2
 
-- name: Install gpg keys
+- name: Install gpg keyse5340588-47f1-49b7-87ad-dc73657edefc
   ansible.builtin.apt_key:
     url: "{{ item.url }}"
     state: present
