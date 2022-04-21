@@ -10,7 +10,7 @@ packer {
 variable "ansible_playbook_path" {
   type = string
   description = "Specifies where ansible playbooks are located"
-  default=false
+  default="../../build_config"
 }
 
 variable "client_id" {
@@ -98,58 +98,40 @@ source "azure-arm" "agent-ubuntu" {
   vm_size  = "Standard_B1s"
 }
 
-source "azure-arm" "agent-ubuntu-bg" {
+
+source "azure-arm" "agent-windows" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
 
   build_resource_group_name = var.resource_group_name
-  managed_image_resource_group_name = var.resource_group_name
-  managed_image_name                = local.blue_green_img_linux
 
-  os_type         = "Linux"
-  image_publisher = "Canonical"
-  image_offer     = "0001-com-ubuntu-server-focal"
-  image_sku       = "20_04-lts-gen2"
+  managed_image_storage_account_type = "Standard_LRS"
+  managed_image_resource_group_name  = var.resource_group_name
+  managed_image_name                 = local.managed_image_name_windows
 
-  vm_size  = "Standard_B1s"
+  os_type         = "Windows"
+  image_publisher = "MicrosoftWindowsServer"
+  image_offer     = "WindowsServer"
+  image_sku       = "2022-datacenter"
+  image_version   = "20348.587.220303"
+
+  location = "West Europe"
+  vm_size  = "Standard_D2_v2"
+
+  communicator   = "winrm"
+  winrm_insecure = true
+  winrm_username = "packer"
+  winrm_use_ssl  = true
 }
-
-
-// source "azure-arm" "agent-windows" {
-//   client_id       = var.client_id
-//   client_secret   = var.client_secret
-//   tenant_id       = var.tenant_id
-//   subscription_id = var.subscription_id
-
-//   managed_image_storage_account_type = "Standard_LRS"
-//   managed_image_resource_group_name  = "ben-packer-weeu-lab-001"
-//   managed_image_name                 = "adowindows-img-weeu-lab-003"
-
-
-//   os_type         = "Windows"
-//   image_publisher = "MicrosoftWindowsServer"
-//   image_offer     = "WindowsServer"
-//   image_sku       = "2022-datacenter"
-//   image_version   = "20348.587.220303"
-
-//   location = "West Europe"
-//   vm_size  = "Standard_D2_v2"
-
-//   communicator   = "winrm"
-//   winrm_insecure = true
-//   winrm_username = "packer"
-//   winrm_use_ssl  = true
-// }
 
 
 # The build block defines what Packer should do with the Docker container after it launches.
 build {
   name = "learn-packer"
   sources = [
-    "source.azure-arm.agent-ubuntu",
-    "source.azure-arm.agent-ubuntu-bg"
+    "source.azure-arm.agent-ubuntu"
   ]
 
   provisioner "ansible" {

@@ -7,12 +7,6 @@ packer {
   }
 }
 
-variable "ansible_playbook_path" {
-  type = string
-  description = "Specifies where ansible playbooks are located"
-  default=false
-}
-
 variable "client_id" {
   type        = string
   description = "Specifies the service principal client-id"
@@ -97,31 +91,31 @@ source "azure-arm" "agent-ubuntu-bg" {
 }
 
 
-// source "azure-arm" "agent-windows" {
-//   client_id       = var.client_id
-//   client_secret   = var.client_secret
-//   tenant_id       = var.tenant_id
-//   subscription_id = var.subscription_id
+source "azure-arm" "agent-windows" {
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
 
-//   managed_image_storage_account_type = "Standard_LRS"
-//   managed_image_resource_group_name  = "ben-packer-weeu-lab-001"
-//   managed_image_name                 = "adowindows-img-weeu-lab-003"
+  managed_image_storage_account_type = "Standard_LRS"
+  managed_image_resource_group_name  = var.resource_group_name
+  managed_image_name                 = local.blue_green_img_windows
 
 
-//   os_type         = "Windows"
-//   image_publisher = "MicrosoftWindowsServer"
-//   image_offer     = "WindowsServer"
-//   image_sku       = "2022-datacenter"
-//   image_version   = "20348.587.220303"
+  os_type         = "Windows"
+  image_publisher = "MicrosoftWindowsServer"
+  image_offer     = "WindowsServer"
+  image_sku       = "2022-datacenter"
+  image_version   = "20348.587.220303"
 
-//   location = "West Europe"
-//   vm_size  = "Standard_D2_v2"
+  location = "West Europe"
+  vm_size  = "Standard_D2_v2"
 
-//   communicator   = "winrm"
-//   winrm_insecure = true
-//   winrm_username = "packer"
-//   winrm_use_ssl  = true
-// }
+  communicator   = "winrm"
+  winrm_insecure = true
+  winrm_username = "packer"
+  winrm_use_ssl  = true
+}
 
 
 # The build block defines what Packer should do with the Docker container after it launches.
@@ -130,19 +124,6 @@ build {
   sources = [
     "source.azure-arm.agent-ubuntu-bg"
   ]
-
-
-  // provisioner "ansible" {
-  //   playbook_file   = "ansible/playbook.yaml"
-  //   user            = "Administrator"
-  //   use_proxy       = false
-  //   extra_arguments = [
-  //     "-e",
-  //     "ansible_winrm_server_cert_validation=ignore"
-  //   ]
-
-  //   only = ["azure-arm.agent-windows"]
-  // }
 
   post-processor "manifest" {
       output = "manifest-bluegreen.json"

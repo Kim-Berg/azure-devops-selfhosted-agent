@@ -24,7 +24,8 @@ function blue_green_swap {
     # 3 = image reference
     printf "${COLOUR}Set ${1} to blue green image...${NC}\n"
     printf "az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}\n"
-    # az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}
+    az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}
+    az vmss update-instances --resource-group ${2} --name ${1} --instance-ids '*'
     sleep 5;
 }
 
@@ -32,7 +33,7 @@ function clean_blue_green_image {
     # 1 = image reference to delete
     printf "${COLOUR}Cleaning up blue green image...${NC}\n"
     printf "az image delete --ids ${1}\n"
-    # az image delete --ids "${1}"
+    az image delete --ids "${1}"
     printf "${COLOUR}All done! :)${NC}\n"
 }
 
@@ -43,11 +44,11 @@ function update_scale_set {
     # 4 = blue green image reference
     printf "${COLOUR}Set scale set ${1} to newly built image...${NC}\n"
     printf "az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}\n"
-    # az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}
+    az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}
     if [[ $? -eq 0 ]]; then \
         printf "${COLOUR}updating running instances...${NC}\n"
         printf "az vmss update-instances --resource-group ${2} --name ${1} --instance-ids \"*\"\n"
-        # az vmss update-instances --resource-group ${2} --name ${1} --instance-ids '*'
+        az vmss update-instances --resource-group ${2} --name ${1} --instance-ids '*'
     fi
 }
 
@@ -74,27 +75,26 @@ else
     exit 1;
 fi
 
-IMAGE_ID=$(jq '.builds[1].artifact_id' ${MANIFEST_PATH} | tr -d '"')
-VMSS_NAME=$(jq '.builds[1].custom_data.target_vmss_name' ${MANIFEST_PATH} | tr -d '"')
-VMSS_RG=$(jq '.builds[1].custom_data.target_vmss_rg' ${MANIFEST_PATH} | tr -d '"')
-BG_LINUX_IMAGE_ID=$(jq '.builds[0].artifact_id' ${MANIFEST_PATH} | tr -d '"')
+IMAGE_ID=$(jq '.builds[0].artifact_id' ${MANIFEST_PATH} | tr -d '"')
+VMSS_NAME=$(jq '.builds[0].custom_data.target_vmss_name' ${MANIFEST_PATH} | tr -d '"')
+VMSS_RG=$(jq '.builds[0].custom_data.target_vmss_rg' ${MANIFEST_PATH} | tr -d '"')
 
 printf "______ ${COLOUR}Current Settings${NC} ______\n"
 printf "CURRENT_STAGE......${COLOUR}${CURRENT_STAGE}${NC}\n"
 printf "MANIFEST_PATH......${COLOUR}${MANIFEST_PATH}${NC}\n"
 printf "TARGET_VMSS........${COLOUR}${VMSS_NAME}${NC}\n"
 printf "TARGET_VMSS_RG.....${COLOUR}${VMSS_RG}${NC}\n"
-printf "BG_LINUX_IMAGE_ID..${COLOUR}${BG_LINUX_IMAGE_ID}${NC}\n"
+printf "IMAGE_ID...........${COLOUR}${IMAGE_ID}${NC}\n"
 
 if [[ -z ${MANIFEST_PATH} ]] || [[ -z ${IMAGE_ID} ]] || [[ -z ${VMSS_NAME} ]] || [[ -n ${VMSS_RG} ]]; then
     if [[ ${UNATTENDED} ]]; then
         case ${CURRENT_STAGE} in
             "first")
-                blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${BG_LINUX_IMAGE_ID}"
+                blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                 ;;
             "second")
                 update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
-                clean_blue_green_image "${BG_LINUX_IMAGE_ID}"
+                clean_blue_green_image "${IMAGE_ID}"
                 ;;
         esac
     else
@@ -104,11 +104,11 @@ if [[ -z ${MANIFEST_PATH} ]] || [[ -z ${IMAGE_ID} ]] || [[ -z ${VMSS_NAME} ]] ||
                 Yes )
                     case ${CURRENT_STAGE} in
                         "first")
-                            blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${BG_LINUX_IMAGE_ID}"
+                            blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                             ;;
                         "second")
                             update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
-                            clean_blue_green_image "${BG_LINUX_IMAGE_ID}"
+                            clean_blue_green_image "${IMAGE_ID}"
                             ;;
                     esac
                     break;;
