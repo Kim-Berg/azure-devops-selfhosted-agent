@@ -1,0 +1,3590 @@
+NAME: apigateway
+LAST DEPLOYED: Mon Apr 25 12:02:33 2022
+NAMESPACE: default
+STATUS: deployed
+REVISION: 4
+USER-SUPPLIED VALUES:
+apigateway:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/api_gateway
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  livenessProbe:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    port: 5005
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    port: 5005
+  replicaCount: 1
+  resources: {}
+  securityContext: {}
+  service:
+    port: 5005
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorbattery:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_battery
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 3002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorcertiq:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_certiq
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6000
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectoreeic:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_eeic
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 8000
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorfluentbit:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_fluentbit
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6789
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectornorthvolt:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_northvolt
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 3012
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectortenant:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_tenant
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6001
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+env:
+  apigateway:
+    ALARM_URL: 10.78.25.29:5001
+    ASPNETCORE_URL: http://0.0.0.0:5005;http://0.0.0.0:5011
+    AUTHORITY: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    FeatureManagement__AlarmAPI: true
+    FeatureManagement__AnalyticsAPI: true
+    FeatureManagement__BatteryAsset: true
+    FeatureManagement__DiagnosticMonitoring: false
+    FeatureManagement__DiagnosticsAppIntegration: false
+    FeatureManagement__ProductionReportAPI: true
+    FeatureManagement__ShiftReportAPI: true
+    ISSUER: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    LOG_LEVEL: Information
+    MEASUREMENT_URL: servicemeasurement.default.svc.cluster.local:5002
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5011
+    NORTHVOLT_INTEGRATION: epiroc
+    NORTHVOLT_URL: https://batcloud.cb-prod.aws.nvlt.co/query
+    RUNTIME_ENVIRONMENT: Cloud
+    ReverseProxy__Clusters__cluster1__Destinations__default_destination__Address: http://serviceventilation.default.svc.cluster.local:5007
+    ReverseProxy__Routes__route1__ClusterId: cluster1
+    ReverseProxy__Routes__route1__Match__Path: /ventilation/{*remainder}
+    ReverseProxy__Routes__route1__Transforms__0__PathPattern: /{remainder}
+    USER_CONNECTION_STRING: ""
+  connectorbattery:
+    BATTERY_TOPIC_PUB: battery
+    LOG_LEVEL: Information
+    METRIC_SERVER_PORT: 7000
+    METRICS_BATTERY_PUBLISH_COUNTER_NAME: metrics_connector_battery_publish_data_counter
+    METRICS_BATTERY_READ_COUNTER_NAME: metrics_connector_battery_data_read_counter
+    NATS_MAX_INFLIGHT: 10000
+    NORTHCLOUD_URI: https://api.northvolt.com/s/query
+    NORTHVOLT_JWT: null
+    NORTHVOLT_TRIGGER_FREQUENCE: 60
+  connectorcertiq:
+    ADD_TEST_MACHINES: true
+    ALARM_TOPIC: alarmrequest.v1
+    CHECK_HAPI: false
+    CHECK_HAPI_POSITION: false
+    COMMIT_INTERVAL_CURSOR: 10000
+    CONNECTION_STRING: null
+    CURSOR_PUBLISH_INTERVAL_MILLISECONDS: 1000
+    EVENT_CURSOR_TOPIC: eventhistorycursor.v1
+    FeatureManagement__TenantFromToken: false
+    MACHINE_METADATA_CURSOR_TOPIC: machinemetadatacursor
+    MEASUREMENT_TOPIC: measurement.v1
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 6000
+    NATS_MAX_IN_FLIGHT: 20000
+    PLATFORM_TOKEN_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    POSITION_CURSOR_TOPIC: positionhistorycursor.v1
+    REGISTER_CURSOR_TOPIC: registerhistorycursor.v1
+    SYNC_INTERVAL_MILLISECONDS: 10000
+  connectoreeic:
+    ALARM_OFFSET: "800000"
+    ALARM_POST_TO_APIM: false
+    ALARM_TOPIC_SUB: alarm
+    ALARMS_GROUP_ID: eeic_alarms
+    APIM_ALARMS_ENDPOINT: https://api.epiroc.com/dev.machine.certiq/v1/MachineAlarms/MachineAlarm
+    APIM_BATTERY_ENDPOINT: https://api-dev.epiroc.com/internal/battery/v1/Battery/ChargeMetric
+    APIM_K8S_SECRET_ALARMS: null
+    APIM_K8S_SECRET_BATTERY: null
+    BATTERY_GROUP_ID: eeic_battery
+    BATTERY_POST_TO_APIM: false
+    BATTERY_TOPIC_SUB: battery
+    FILTER_DUPLICATE_BATTERY_DATA: true
+    LOG_LEVEL: Warning
+    METRIC_SERVER_PORT: 8000
+    METRICS_EEIC_PUBLISH_ALARM_COUNTER: metrics_connector_eeic_publish_alarm_counter
+    METRICS_EEIC_PUBLISH_BATTERY_COUNTER: metrics_connector_eeic_publish_battery_counter
+    METRICS_EEIC_READ_ALARM_COUNTER: metrics_connector_eeic_read_alarm_counter
+    METRICS_EEIC_READ_BATTERY_COUNTER: metrics_connector_eeic_read_battery_counter
+    NATS_MAX_INFLIGHT: 100
+  connectorfluentbit:
+    CHANGE_AUDITLOG_TOPIC: auditLogChange
+    CHANNEL_SIZE: "1000"
+    FLUENTBIT_AUDITLOG_PORT: "24224"
+    FLUENTBIT_PORT: "24225"
+    FLUENTBIT_SERVER: iop-fluentbit
+    MESSAGES_PER_SECOND: "20000"
+    MICROSERVICE_LOG_TOPIC: microserviceLog
+    NATS_ACK_WAIT_MILLISECONDS: "1000000"
+    NATS_CLIENT_ID: ConnectorFluentBit
+    NATS_DELIVER_ALL_AVAILABLE: false
+    NATS_DURABLE_NAME: ConnectorFluentBit
+    NATS_MAX_INFLIGHT: "1000"
+    WINDOWS_EVENT_LOG_TOPIC: auditLogWindowsEvent
+  connectornorthvolt:
+    JetStreamConnection__Connection__Url: nats://jetstream.default.svc.cluster.local:4223
+    JetStreamOptions__StreamName: NorthvoltMessages
+    JetStreamOptions__Subjects: com.*.northvolt
+    NorthvoltApi__ApiKey: null
+    NorthvoltApi__Integration: epiroc
+    NorthvoltApi__RetryCount: 3
+    NorthvoltApi__Url: https://batcloud.cb-prod.aws.nvlt.co/query
+    NorthvoltWorker__TimeBetweenWork: "00:01:00"
+    Serilog__MinimumLevel__Default: Information
+  connectortenant:
+    CacheConnection: null
+    EndpointUrl: https://api-dev.epiroc.com/internal/myepirocdata/api/v1/ExternalService/allmachineswithusers
+    RetryCountApi: 3
+    SubscriptionKey: null
+  fluentbit:
+    AUDIT_PORT: 24224
+    BLOB_ACCOUNT: staiopdev001
+    FLUENTBIT_URL: http://localhost
+    LOKI_IP: loki.monitoring.svc.cluster.local
+    LOKI_PORT: 3100
+    RUNTIME_ENVIRONMENT: Cloud
+    SERILOG_PORT: 24223
+    SYSLOG_PORT: 24226
+    TRACE_PORT: 24225
+  grafana:
+    GRAFANA_DATASOURCE_AZUREOMS_TENANT_ID: 896ecbea-bd27-4a3c-a131-34aa0b46a086
+    GRAFANA_DATASOURCE_AZUREOMS_WORKSPACE_ID: 77aefef1-f542-4514-b0a3-9b7a98fd86ee
+    GRAFANA_DATASOURCE_INFLUX_DB_URL: http://10.46.68.174:8086
+    GRAFANA_DATASOURCE_LOKI_URL: http://loki.monitoring.svc.cluster.local:3100/
+    GRAFANA_DATASOURCE_PROMETHEUS_URL: http://prometheus.monitoring.svc.cluster.local:9090
+    GRAFANA_ROOT_URL: https://iop-dev-monitor.epiroc.group
+  logger:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5033
+    NATS_CHANGE_AUDIT_LOG_TOPIC: auditLogChange
+    NATS_CLIENT_ID: interoperabilityLogger
+    NATS_MICROSERVICE_LOG_TOPIC: microserviceLog
+    NATS_WINDOWS_EVENT_AUDIT_LOG_TOPIC: auditLogWindowsEvent
+    PLATFORM_TOKEN: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFcGlyb2MiLCJhdWQiOlsiQ2VydGlxQ29ubmVjdG9yIiwiRXhwb3J0U2VydmljZSIsIk1pcnJvckNvbm5lY3RvciIsIlNlbnNvckNvbm5lY3RvciIsIlNwYXJrcGx1Z0Nvbm5lY3RvciJdLCJpYXQiOjE2MTA1MjYzOTEsImV4cCI6MTY0MjA2MjM5MSwidGVuYW50IjpbInRlc3QiXSwiZW52IjpbImNsb3VkIl0sInNlcnZpY2UiOlsiQ2VydGlxQ29ubmVjdG9yIiwiTWlycm9yQ29ubmVjdG9yIl19.M0lwi3ShPJUSSzzCt0XJpAokYtFlqVDx3DEENPBljLi8uCQCq8k4Ar3iVxchzA85EroJGTwHW76rH09rYhS7eLSnNtlNd2ZZldlokvmHsEjSbUXWreoVBXYJsjNJhaA3pMlOOIQOxh9jNhVJye252GyMkx0Pjr32vH_hI8xbUx9NgKK7-kH8FoZptWs_Bde2R4CiuOVtSBENqPz8UanRBp-zD6k41icukoEvkK6TW56mosy5AAcaVudvFZ2xNrMoBFwGJV2mPyhFWqKP5_3_U9NN-ghW8HYHE7mfdiKRZ7cOKW90YZ_DUTjxw0u4OJHWN6TN4WUd6Oqu2lnWo-IEAg
+    STANDARD_RETRY_FOREVER_POLICY_SLEEP_TIME: "00:00:10"
+  processorhandler:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    Handlers__PublishIntegrationEvents__DurableName: integration_event_publisher
+    Handlers__PublishIntegrationEvents__Topic: prc.evt.machines.*.signal.operationMode.valueChanged
+    JetStream__Url: nats://jetstream.default.svc.cluster.local:4223
+    Nats__Url: nats://nats-client.default.svc.cluster.local:4222
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 9002
+    Serilog__MinimumLevel__Default: Information
+  processoringestion:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    JetStream__Url: nats://jetstream.default.svc.cluster.local:4223
+    Nats__DurableName: processor-20210526
+    Nats__Url: nats://nats-client.default.svc.cluster.local:4222
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 9001
+    Serilog__MinimumLevel__Default: Information
+  serviceaemp:
+    ASPNETCORE_URL: http://0.0.0.0:5004
+    AppSettings__Authority: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    AppSettings__CacheExpiration: 15
+    AppSettings__CertiqAPIUrl: none
+    AppSettings__Issuer: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    AppSettings__JwtAudience: APIAEMP
+    AppSettings__JwtIssuer: Epiroc
+    AppSettings__MeasurementUrl: servicemeasurement.default.svc.cluster.local:5002
+    AppSettings__PageSizeLimit: 100
+    AppSettings__RedisConnectionString: null
+    AppSettings__SnapshotFetchedTimeHour: "07:00"
+    AppSettings__Version: "1.0"
+    ConnectionString: null
+    RequestUrl: https://api-dev.epiroc.com/external/aemp/v1
+    SecretKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    Serilog__MinimumLevel__Default: Information
+  servicealarms:
+    ALARM_GROUP_ID: alarmservice_220211_1
+    ALARM_TOPIC_PUB: alarm
+    ALARM_TOPIC_SUB: alarmrequest.v1
+    ASPNETCORE_URLS: http://0.0.0.0:5001
+    CONNECTION_STRING: null
+    DATABASE_TYPE: SQLServer
+    LOG_LEVEL: Information
+    METRIC_SERVER_HOST: '*:9000'
+    METRICS_ALARM_PUBLISH_COUNTER: metrics_alarm_publish_counter
+    METRICS_ALARM_READ_COUNTER: metrics_alarm_read_counter
+    NATS_ACK_WAIT_MILLISECONDS: 60000
+    NATS_MAX_IN_FLIGHT: 5000
+    NATS_START_SEQUENCE: "-1"
+    RESTORE_BATCH_SIZE: 5000
+    RESTORE_CACHE: 500000
+    RESTORE_CACHE_REMOVAL_SIZE: 50000
+  servicedevicesync:
+    ASPNETCORE_URLS: http://0.0.0.0:5010
+    AppSettings__EndPointUrl: https://api-dev.epiroc.com/internal/myepirocdata/api/v1/ExternalService/allmachineswithusers
+    AppSettings__MeasurementUrl: servicemeasurement.default.svc.cluster.local:5002
+    AppSettings__RetryCountApi: "3"
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 3001
+    Serilog__MinimumLevel__Default: Information
+  serviceexport:
+    ASPNETCORE_URLS: http://*:5003;http://*:5016
+    FeatureManagement__DiagnosticsAppIntegration: false
+    REQUEST_TOKEN_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    SERVICE_ENVIRONMENT: cloud_dev
+    SERVICE_TOKEN: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFcGlyb2MiLCJpYXQiOjE1ODg4Mjg5NTksImV4cCI6MTY5OTM2OTYwMCwiYXVkIjpbIkV4cG9ydFNlcnZpY2UiLCJDZXJ0aXFDb25uZWN0b3IiLCJNaXJyb3JDb25uZWN0b3IiLCJTcGFya3BsdWdDb25uZWN0b3IiLCJTZW5zb3JDb25uZWN0b3IiXSwiZmVhdHVyZSI6WyJUZW5hbnRGcm9tVG9rZW4iXSwiZW52IjoiY2xvdWRfZGV2Iiwic2VydmljZSI6WyJFeHBvcnRTZXJ2aWNlIiwiQ2VydGlxQ29ubmVjdG9yIiwiTWlycm9yQ29ubmVjdG9yIiwiU3BhcmtwbHVnQ29ubmVjdG9yIiwiU2Vuc29yQ29ubmVjdG9yIl19.TAcnvY-B_aBweh_88SIguRPL5w6a64A5gq-aZNq0Rr_fipLKhPwpoTJV08TbgVz0hcuYUcbwr4C7S3kTl3dUBYYclP5U4MhQ6978T8y1WJgdnFV1mgC9FXKZ9LEk3xq8xKjlTKjiXVaifJjDqziRJJrG2P-Emb6ZiaITXFQHom-avytfHxP83EJmsEwHHLS-r182TwIPRh8JXQ5Ny3HOCQ8k_25THky-zDLIBfKW-q48espAm8hUBAoPate_qex6PzacvzsFK-VlV9ujbFT7nTB0t3cb6Xjqgc80DbYXcdYUF6C0Oeipbv63MJUF_w-KCN5JeA5Xky-CC2wc2Jca7Q
+    STAN_NATS_URL: nats://nats-client.default.svc.cluster.local:4222
+    Serilog__MinimumLevel__Default: Information
+  servicemeasurement:
+    ASPNETCORE_URLS: http://0.0.0.0:5002
+    AUTHORITY: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    DATABASE_NAME: measurementdatabase_v1
+    DATABASE_URL: http://10.46.68.174:8086
+    FeatureManagement__DiagnosticMonitoring: false
+    FeatureManagement__DiagnosticsAppIntegration: false
+    FeatureManagement__HydraulicAttachmentToolApi: true
+    FeatureManagement__ProductionReportApi: true
+    INFLUXDB_BATCHSIZE: "10000"
+    ISSUER: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    MEASUREMENT_TOPIC_SUB: measurement.v1
+    METADATA_CONNECTION_STRING: null
+    METADATA_DATABASE_TYPE: SQLServer
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5000
+    METRICS_PUBLISH_COUNTER_NAME: metrics_service_measurment_publish_counter
+    NATS_DURABLE_NAME: measurementservice20210614
+    PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    RUNTIME_ENVIRONMENT: Cloud
+    Serilog__MinimumLevel__Default: Information
+    USER_CONNECTION_STRING: ""
+  serviceventilation:
+    ASPNETCORE_URLS: http://0.0.0.0:5007
+    Auth__Authority: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    Auth__DisableAuthorization: false
+    Auth__Issuer: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    LOG_LEVEL: Information
+    Nats__AlarmTopic: alarmrequest.v1
+    Nats__MaxInFlight: 10000
+    Nats__MeasurementTopic: measurement.v1
+    Nats__NatsAckWait: 30000
+    Nats__NatsAlarmClientId: ServiceVentilation_Cloud2
+    Nats__NatsDurableName: ServiceVentilation
+    Nats__NatsMeasurementClientId: ServiceVentilation_Cloud1
+    Nats__StartAt__DateTime: "2021-03-01"
+    Persistence__Type: SqlServer
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 5019
+  shared:
+    NATS_CLUSTER_NAME: NATS-cluster
+    NATS_URL: nats://nats-client.default.svc.cluster.local:4222
+    PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+  toolssimulator:
+    ASPNETCORE_URLS: http://0.0.0.0:5020
+    AcceptedMachines: "8813591801"
+    CONFIGURATION_FILE_PATH: defaultConfig.json
+    METRIC_PORT: 5091
+    RESTART_DELAY_MS: 30000
+    SERILOG_LOG_LEVEL: Information
+    STAN_CLIENT_ID: Simulator
+    STAN_TOPIC_PUB: measurement.v1
+fluentbit:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  deployment:
+    updateType: RollingUpdate
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/fluent/fluent-bit
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 24223
+    successThreshold: 1
+    timeoutSeconds: 10
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    port: 24223
+    successThreshold: 1
+    timeoutSeconds: 10
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 24223
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+grafana:
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/iop-grafana
+    tag: cloud-rc-1.1.2
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - iop-dev-monitor.epiroc.group
+    labels: null
+    path: /(.*)
+    tls:
+    - hosts:
+      - iop-dev-monitor.epiroc.group
+      secretName: grafana-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    annotations: {}
+    labels: {}
+    port: 3000
+    portName: service
+    targetPort: 3000
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+ingressnginx:
+  commonLabels: {}
+  controller:
+    addHeaders: {}
+    admissionWebhooks:
+      annotations: {}
+      certificate: /usr/local/certificates/cert
+      createSecretJob:
+        resources: {}
+      enabled: true
+      existingPsp: ""
+      failurePolicy: Fail
+      key: /usr/local/certificates/key
+      labels: {}
+      namespaceSelector: {}
+      objectSelector: {}
+      patch:
+        enabled: true
+        fsGroup: 2000
+        image:
+          digest: sha256:64d8c73dca984af206adf9d6d7e46aa550362b1d7a01f3a0a91b20cc67868660
+          image: ingress-nginx/kube-webhook-certgen
+          pullPolicy: IfNotPresent
+          registry: k8s.gcr.io
+          tag: v1.1.1
+        labels: {}
+        nodeSelector:
+          kubernetes.io/os: linux
+        podAnnotations: {}
+        priorityClassName: ""
+        runAsUser: 2000
+        tolerations: []
+      patchWebhookJob:
+        resources: {}
+      port: 8443
+      service:
+        annotations: {}
+        externalIPs: []
+        loadBalancerSourceRanges: []
+        servicePort: 443
+        type: ClusterIP
+    affinity: {}
+    allowSnippetAnnotations: true
+    annotations: {}
+    autoscaling:
+      behavior: {}
+      enabled: false
+      maxReplicas: 11
+      minReplicas: 1
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+    autoscalingTemplate: []
+    config: {}
+    configAnnotations: {}
+    configMapNamespace: ""
+    containerName: controller
+    containerPort:
+      http: 80
+      https: 443
+    customTemplate:
+      configMapKey: ""
+      configMapName: ""
+    dnsConfig: {}
+    dnsPolicy: ClusterFirst
+    electionID: ingress-controller-leader
+    enableMimalloc: true
+    existingPsp: ""
+    extraArgs: {}
+    extraContainers: []
+    extraEnvs: []
+    extraInitContainers: []
+    extraModules: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    healthCheckHost: ""
+    healthCheckPath: /healthz
+    hostNetwork: false
+    hostPort:
+      enabled: false
+      ports:
+        http: 80
+        https: 443
+    hostname: {}
+    image:
+      allowPrivilegeEscalation: true
+      chroot: false
+      digest: sha256:d8196e3bc1e72547c5dec66d6556c0ff92a23f6d0919b206be170bc90d5f9185
+      digestChroot: sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5
+      image: ingress-nginx/controller
+      pullPolicy: IfNotPresent
+      registry: k8s.gcr.io
+      runAsUser: 101
+      tag: v1.2.0
+    ingressClass: nginx
+    ingressClassByName: false
+    ingressClassResource:
+      controllerValue: k8s.io/ingress-nginx
+      default: false
+      enabled: true
+      name: nginx
+      parameters: {}
+    keda:
+      apiVersion: keda.sh/v1alpha1
+      behavior: {}
+      cooldownPeriod: 300
+      enabled: false
+      maxReplicas: 11
+      minReplicas: 1
+      pollingInterval: 30
+      restoreToOriginalReplicaCount: false
+      scaledObject:
+        annotations: {}
+      triggers: []
+    kind: Deployment
+    labels: {}
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /wait-shutdown
+    livenessProbe:
+      failureThreshold: 5
+      httpGet:
+        path: /healthz
+        port: 10254
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    maxmindLicenseKey: ""
+    metrics:
+      enabled: false
+      port: 10254
+      prometheusRule:
+        additionalLabels: {}
+        enabled: false
+        rules: []
+      service:
+        annotations: {}
+        externalIPs: []
+        loadBalancerSourceRanges: []
+        servicePort: 10254
+        type: ClusterIP
+      serviceMonitor:
+        additionalLabels: {}
+        enabled: false
+        metricRelabelings: []
+        namespace: ""
+        namespaceSelector: {}
+        relabelings: []
+        scrapeInterval: 30s
+        targetLabels: []
+    minAvailable: 1
+    minReadySeconds: 0
+    name: controller
+    nodeSelector:
+      kubernetes.io/os: linux
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext: {}
+    priorityClassName: ""
+    proxySetHeaders: {}
+    publishService:
+      enabled: true
+      pathOverride: ""
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 10254
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    replicaCount: 1
+    reportNodeInternalIp: false
+    resources:
+      limits:
+        cpu: 200m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    scope:
+      enabled: false
+      namespace: ""
+      namespaceSelector: ""
+    service:
+      annotations: {}
+      appProtocol: true
+      enableHttp: true
+      enableHttps: true
+      enabled: true
+      external:
+        enabled: false
+      externalIPs: []
+      internal:
+        annotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        enabled: true
+        loadBalancerIP: 10.78.25.70
+        loadBalancerSourceRanges: []
+      ipFamilies:
+      - IPv4
+      ipFamilyPolicy: SingleStack
+      labels: {}
+      loadBalancerSourceRanges: []
+      nodePorts:
+        http: ""
+        https: ""
+        tcp: {}
+        udp: {}
+      ports:
+        http: 80
+        https: 443
+      targetPorts:
+        http: http
+        https: https
+      type: LoadBalancer
+    shareProcessNamespace: false
+    sysctls: {}
+    tcp:
+      annotations: {}
+      configMapNamespace: ""
+    terminationGracePeriodSeconds: 300
+    tolerations: []
+    topologySpreadConstraints: []
+    udp:
+      annotations: {}
+      configMapNamespace: ""
+    updateStrategy: {}
+    watchIngressWithoutClass: false
+  defaultBackend:
+    affinity: {}
+    autoscaling:
+      annotations: {}
+      enabled: false
+      maxReplicas: 2
+      minReplicas: 1
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+    containerSecurityContext: {}
+    enabled: false
+    existingPsp: ""
+    extraArgs: {}
+    extraEnvs: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    image:
+      allowPrivilegeEscalation: false
+      image: defaultbackend-amd64
+      pullPolicy: IfNotPresent
+      readOnlyRootFilesystem: true
+      registry: k8s.gcr.io
+      runAsNonRoot: true
+      runAsUser: 65534
+      tag: "1.5"
+    labels: {}
+    livenessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    minAvailable: 1
+    name: defaultbackend
+    nodeSelector:
+      kubernetes.io/os: linux
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext: {}
+    port: 8080
+    priorityClassName: ""
+    readinessProbe:
+      failureThreshold: 6
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    replicaCount: 1
+    resources: {}
+    service:
+      annotations: {}
+      externalIPs: []
+      loadBalancerSourceRanges: []
+      servicePort: 80
+      type: ClusterIP
+    serviceAccount:
+      automountServiceAccountToken: true
+      create: true
+      name: ""
+    tolerations: []
+  dhParam: null
+  imagePullSecrets: []
+  podSecurityPolicy:
+    enabled: false
+  rbac:
+    create: true
+    scope: false
+  revisionHistoryLimit: 10
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: ""
+  tcp: {}
+  udp: {}
+jetstream:
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/jetstream
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 3910m
+      memory: 8Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  securityContext: {}
+  service:
+    port: 4223
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+logger:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/interoperability_logger
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9020
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: ""
+  tolerations: []
+loki:
+  affinity: {}
+  alerting_groups: []
+  annotations: {}
+  client: {}
+  config:
+    auth_enabled: false
+    chunk_store_config:
+      max_look_back_period: 0s
+    compactor:
+      shared_store: filesystem
+      working_directory: /data/loki/boltdb-shipper-compactor
+    ingester:
+      chunk_block_size: 262144
+      chunk_idle_period: 3m
+      chunk_retain_period: 1m
+      lifecycler:
+        ring:
+          kvstore:
+            store: inmemory
+          replication_factor: 1
+      max_transfer_retries: 0
+    limits_config:
+      enforce_metric_name: false
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+    schema_config:
+      configs:
+      - from: "2020-10-24"
+        index:
+          period: 24h
+          prefix: index_
+        object_store: filesystem
+        schema: v11
+        store: boltdb-shipper
+    server:
+      http_listen_port: 3100
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: /data/loki/boltdb-shipper-active
+        cache_location: /data/loki/boltdb-shipper-cache
+        cache_ttl: 24h
+        shared_store: filesystem
+      filesystem:
+        directory: /data/loki/chunks
+    table_manager:
+      retention_deletes_enabled: false
+      retention_period: 0s
+  env: []
+  extraArgs: {}
+  extraContainers: []
+  extraPorts: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    pullPolicy: IfNotPresent
+    repository: grafana/loki
+    tag: 2.0.0
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  initContainers: []
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  networkPolicy:
+    enabled: false
+  nodeSelector: {}
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    enabled: false
+    size: 10Gi
+  podAnnotations:
+    prometheus.io/port: http-metrics
+    prometheus.io/scrape: "true"
+  podDisruptionBudget: {}
+  podLabels: {}
+  podManagementPolicy: OrderedReady
+  rbac:
+    create: true
+    pspEnabled: true
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  replicas: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext:
+    fsGroup: 10001
+    runAsGroup: 10001
+    runAsNonRoot: true
+    runAsUser: 10001
+  service:
+    annotations: {}
+    labels: {}
+    nodePort: null
+    port: 3100
+    targetPort: http-metrics
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  serviceMonitor:
+    additionalLabels: {}
+    annotations: {}
+    enabled: false
+    interval: ""
+  terminationGracePeriodSeconds: 4800
+  tolerations: []
+  tracing:
+    jaegerAgentHost: null
+  updateStrategy:
+    type: RollingUpdate
+natsbackuptool:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/nats_backup_restore_tool
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 80
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+natsclient:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  diskMonitor:
+    alerts:
+    - mount: /nats
+      threshold: 90
+    command:
+    - --collectors.enabled=diskstats,filesystem
+    enabled: true
+    image: prom/node-exporter
+    name: disk-monitor
+    port:
+      containerPort: 9100
+      name: default
+      protocol: TCP
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/stan
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  monitoring:
+    service:
+      annotations: {}
+      loadBalancerIP: null
+      port: 8222
+      type: ClusterIP
+  nameOverride: ""
+  node_exporter:
+    service:
+      port: 9100
+      type: ClusterIP
+  nodeSelector: {}
+  persistentVolumes:
+  - mount: /nats
+    name: dsk-iopnats-weeu-dev-002-pvc
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 3910m
+      memory: 8Gi
+    requests:
+      cpu: 100m
+      memory: 4Gi
+  securityContext: {}
+  service:
+    port: 4222
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+natsexporter:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  config:
+    metrics:
+      channelz: true
+      connz: true
+      gatewayz: true
+      routez: true
+      serverz: true
+      subz: true
+      varz: true
+    nats:
+      namespace: default
+      port: 8222
+      service: nats-monitoring
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: natsio/prometheus-nats-exporter
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 7777
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+processorhandler:
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/processor_handlers
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+processoringestion:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/processor_ingestion
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 40
+    port: 9001
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 9001
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    clusterIP: processoringestion.default.svc.cluster.local
+    port: 9001
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+prometheus:
+  affinity: {}
+  diskMonitor:
+    alerts:
+    - mount: /prometheus
+      threshold: 90
+    command:
+    - --collectors.enabled=diskstats,filesystem
+    enabled: true
+    image: prom/node-exporter
+    name: disk-monitor
+    port:
+      containerPort: 9100
+      name: default
+      protocol: TCP
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/prometheus
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  persistentVolumes:
+  - mount: /prometheus
+    name: dsk-iopprometheus-weeu-dev-001-pvc
+  podSecurityContext:
+    fsGroup: 65534
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9090
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceaemp:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/aemp
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /aemp/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - iop-dev-apigateway.epiroc.group
+    labels: null
+    path: /aemp/(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5004
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+servicealarms:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_alarms
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5001
+    prometheusPort: 9000
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  tolerations: []
+servicedevicesync:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/devicesync
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5010
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceexport:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_export
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5003
+    prometheusPort: 5016
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  tolerations: []
+servicemeasurement:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_measurement
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 40
+    port: 5002
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 5002
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceventilation:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_ventilation
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /ventilation/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: false
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /ventilation/(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5007
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+toolssimulator:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/tools_simulator
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /simulator/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /simulator/(.*)
+    port: 5020
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5020
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+
+COMPUTED VALUES:
+apigateway:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/api_gateway
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  livenessProbe:
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    port: 5005
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    port: 5005
+  replicaCount: 1
+  resources: {}
+  securityContext: {}
+  service:
+    port: 5005
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorbattery:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_battery
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 3002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorcertiq:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_certiq
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6000
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectoreeic:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_eeic
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 8000
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectorfluentbit:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_fluentbit
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6789
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectornorthvolt:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_northvolt
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 3012
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+connectortenant:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/connector_tenant
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 6001
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+env:
+  apigateway:
+    ALARM_URL: 10.78.25.29:5001
+    ASPNETCORE_URL: http://0.0.0.0:5005;http://0.0.0.0:5011
+    AUTHORITY: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    FeatureManagement__AlarmAPI: true
+    FeatureManagement__AnalyticsAPI: true
+    FeatureManagement__BatteryAsset: true
+    FeatureManagement__DiagnosticMonitoring: false
+    FeatureManagement__DiagnosticsAppIntegration: false
+    FeatureManagement__ProductionReportAPI: true
+    FeatureManagement__ShiftReportAPI: true
+    ISSUER: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    LOG_LEVEL: Information
+    MEASUREMENT_URL: servicemeasurement.default.svc.cluster.local:5002
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5011
+    NORTHVOLT_INTEGRATION: epiroc
+    NORTHVOLT_URL: https://batcloud.cb-prod.aws.nvlt.co/query
+    RUNTIME_ENVIRONMENT: Cloud
+    ReverseProxy__Clusters__cluster1__Destinations__default_destination__Address: http://serviceventilation.default.svc.cluster.local:5007
+    ReverseProxy__Routes__route1__ClusterId: cluster1
+    ReverseProxy__Routes__route1__Match__Path: /ventilation/{*remainder}
+    ReverseProxy__Routes__route1__Transforms__0__PathPattern: /{remainder}
+    USER_CONNECTION_STRING: ""
+  connectorbattery:
+    BATTERY_TOPIC_PUB: battery
+    LOG_LEVEL: Information
+    METRIC_SERVER_PORT: 7000
+    METRICS_BATTERY_PUBLISH_COUNTER_NAME: metrics_connector_battery_publish_data_counter
+    METRICS_BATTERY_READ_COUNTER_NAME: metrics_connector_battery_data_read_counter
+    NATS_MAX_INFLIGHT: 10000
+    NORTHCLOUD_URI: https://api.northvolt.com/s/query
+    NORTHVOLT_JWT: null
+    NORTHVOLT_TRIGGER_FREQUENCE: 60
+  connectorcertiq:
+    ADD_TEST_MACHINES: true
+    ALARM_TOPIC: alarmrequest.v1
+    CHECK_HAPI: false
+    CHECK_HAPI_POSITION: false
+    COMMIT_INTERVAL_CURSOR: 10000
+    CONNECTION_STRING: null
+    CURSOR_PUBLISH_INTERVAL_MILLISECONDS: 1000
+    EVENT_CURSOR_TOPIC: eventhistorycursor.v1
+    FeatureManagement__TenantFromToken: false
+    MACHINE_METADATA_CURSOR_TOPIC: machinemetadatacursor
+    MEASUREMENT_TOPIC: measurement.v1
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 6000
+    NATS_MAX_IN_FLIGHT: 20000
+    PLATFORM_TOKEN_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    POSITION_CURSOR_TOPIC: positionhistorycursor.v1
+    REGISTER_CURSOR_TOPIC: registerhistorycursor.v1
+    SYNC_INTERVAL_MILLISECONDS: 10000
+  connectoreeic:
+    ALARM_OFFSET: "800000"
+    ALARM_POST_TO_APIM: false
+    ALARM_TOPIC_SUB: alarm
+    ALARMS_GROUP_ID: eeic_alarms
+    APIM_ALARMS_ENDPOINT: https://api.epiroc.com/dev.machine.certiq/v1/MachineAlarms/MachineAlarm
+    APIM_BATTERY_ENDPOINT: https://api-dev.epiroc.com/internal/battery/v1/Battery/ChargeMetric
+    APIM_K8S_SECRET_ALARMS: null
+    APIM_K8S_SECRET_BATTERY: null
+    BATTERY_GROUP_ID: eeic_battery
+    BATTERY_POST_TO_APIM: false
+    BATTERY_TOPIC_SUB: battery
+    FILTER_DUPLICATE_BATTERY_DATA: true
+    LOG_LEVEL: Warning
+    METRIC_SERVER_PORT: 8000
+    METRICS_EEIC_PUBLISH_ALARM_COUNTER: metrics_connector_eeic_publish_alarm_counter
+    METRICS_EEIC_PUBLISH_BATTERY_COUNTER: metrics_connector_eeic_publish_battery_counter
+    METRICS_EEIC_READ_ALARM_COUNTER: metrics_connector_eeic_read_alarm_counter
+    METRICS_EEIC_READ_BATTERY_COUNTER: metrics_connector_eeic_read_battery_counter
+    NATS_MAX_INFLIGHT: 100
+  connectorfluentbit:
+    CHANGE_AUDITLOG_TOPIC: auditLogChange
+    CHANNEL_SIZE: "1000"
+    FLUENTBIT_AUDITLOG_PORT: "24224"
+    FLUENTBIT_PORT: "24225"
+    FLUENTBIT_SERVER: iop-fluentbit
+    MESSAGES_PER_SECOND: "20000"
+    MICROSERVICE_LOG_TOPIC: microserviceLog
+    NATS_ACK_WAIT_MILLISECONDS: "1000000"
+    NATS_CLIENT_ID: ConnectorFluentBit
+    NATS_DELIVER_ALL_AVAILABLE: false
+    NATS_DURABLE_NAME: ConnectorFluentBit
+    NATS_MAX_INFLIGHT: "1000"
+    WINDOWS_EVENT_LOG_TOPIC: auditLogWindowsEvent
+  connectornorthvolt:
+    JetStreamConnection__Connection__Url: nats://jetstream.default.svc.cluster.local:4223
+    JetStreamOptions__StreamName: NorthvoltMessages
+    JetStreamOptions__Subjects: com.*.northvolt
+    NorthvoltApi__ApiKey: null
+    NorthvoltApi__Integration: epiroc
+    NorthvoltApi__RetryCount: 3
+    NorthvoltApi__Url: https://batcloud.cb-prod.aws.nvlt.co/query
+    NorthvoltWorker__TimeBetweenWork: "00:01:00"
+    Serilog__MinimumLevel__Default: Information
+  connectortenant:
+    CacheConnection: null
+    EndpointUrl: https://api-dev.epiroc.com/internal/myepirocdata/api/v1/ExternalService/allmachineswithusers
+    RetryCountApi: 3
+    SubscriptionKey: null
+  fluentbit:
+    AUDIT_PORT: 24224
+    BLOB_ACCOUNT: staiopdev001
+    FLUENTBIT_URL: http://localhost
+    LOKI_IP: loki.monitoring.svc.cluster.local
+    LOKI_PORT: 3100
+    RUNTIME_ENVIRONMENT: Cloud
+    SERILOG_PORT: 24223
+    SYSLOG_PORT: 24226
+    TRACE_PORT: 24225
+  grafana:
+    GRAFANA_DATASOURCE_AZUREOMS_TENANT_ID: 896ecbea-bd27-4a3c-a131-34aa0b46a086
+    GRAFANA_DATASOURCE_AZUREOMS_WORKSPACE_ID: 77aefef1-f542-4514-b0a3-9b7a98fd86ee
+    GRAFANA_DATASOURCE_INFLUX_DB_URL: http://10.46.68.174:8086
+    GRAFANA_DATASOURCE_LOKI_URL: http://loki.monitoring.svc.cluster.local:3100/
+    GRAFANA_DATASOURCE_PROMETHEUS_URL: http://prometheus.monitoring.svc.cluster.local:9090
+    GRAFANA_ROOT_URL: https://iop-dev-monitor.epiroc.group
+  logger:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5033
+    NATS_CHANGE_AUDIT_LOG_TOPIC: auditLogChange
+    NATS_CLIENT_ID: interoperabilityLogger
+    NATS_MICROSERVICE_LOG_TOPIC: microserviceLog
+    NATS_WINDOWS_EVENT_AUDIT_LOG_TOPIC: auditLogWindowsEvent
+    PLATFORM_TOKEN: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFcGlyb2MiLCJhdWQiOlsiQ2VydGlxQ29ubmVjdG9yIiwiRXhwb3J0U2VydmljZSIsIk1pcnJvckNvbm5lY3RvciIsIlNlbnNvckNvbm5lY3RvciIsIlNwYXJrcGx1Z0Nvbm5lY3RvciJdLCJpYXQiOjE2MTA1MjYzOTEsImV4cCI6MTY0MjA2MjM5MSwidGVuYW50IjpbInRlc3QiXSwiZW52IjpbImNsb3VkIl0sInNlcnZpY2UiOlsiQ2VydGlxQ29ubmVjdG9yIiwiTWlycm9yQ29ubmVjdG9yIl19.M0lwi3ShPJUSSzzCt0XJpAokYtFlqVDx3DEENPBljLi8uCQCq8k4Ar3iVxchzA85EroJGTwHW76rH09rYhS7eLSnNtlNd2ZZldlokvmHsEjSbUXWreoVBXYJsjNJhaA3pMlOOIQOxh9jNhVJye252GyMkx0Pjr32vH_hI8xbUx9NgKK7-kH8FoZptWs_Bde2R4CiuOVtSBENqPz8UanRBp-zD6k41icukoEvkK6TW56mosy5AAcaVudvFZ2xNrMoBFwGJV2mPyhFWqKP5_3_U9NN-ghW8HYHE7mfdiKRZ7cOKW90YZ_DUTjxw0u4OJHWN6TN4WUd6Oqu2lnWo-IEAg
+    STANDARD_RETRY_FOREVER_POLICY_SLEEP_TIME: "00:00:10"
+  processorhandler:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    Handlers__PublishIntegrationEvents__DurableName: integration_event_publisher
+    Handlers__PublishIntegrationEvents__Topic: prc.evt.machines.*.signal.operationMode.valueChanged
+    JetStream__Url: nats://jetstream.default.svc.cluster.local:4223
+    Nats__Url: nats://nats-client.default.svc.cluster.local:4222
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 9002
+    Serilog__MinimumLevel__Default: Information
+  processoringestion:
+    FeatureManagement__DiagnosticsAppIntegration: false
+    JetStream__Url: nats://jetstream.default.svc.cluster.local:4223
+    Nats__DurableName: processor-20210526
+    Nats__Url: nats://nats-client.default.svc.cluster.local:4222
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 9001
+    Serilog__MinimumLevel__Default: Information
+  serviceaemp:
+    ASPNETCORE_URL: http://0.0.0.0:5004
+    AppSettings__Authority: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    AppSettings__CacheExpiration: 15
+    AppSettings__CertiqAPIUrl: none
+    AppSettings__Issuer: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    AppSettings__JwtAudience: APIAEMP
+    AppSettings__JwtIssuer: Epiroc
+    AppSettings__MeasurementUrl: servicemeasurement.default.svc.cluster.local:5002
+    AppSettings__PageSizeLimit: 100
+    AppSettings__RedisConnectionString: null
+    AppSettings__SnapshotFetchedTimeHour: "07:00"
+    AppSettings__Version: "1.0"
+    ConnectionString: null
+    RequestUrl: https://api-dev.epiroc.com/external/aemp/v1
+    SecretKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    Serilog__MinimumLevel__Default: Information
+  servicealarms:
+    ALARM_GROUP_ID: alarmservice_220211_1
+    ALARM_TOPIC_PUB: alarm
+    ALARM_TOPIC_SUB: alarmrequest.v1
+    ASPNETCORE_URLS: http://0.0.0.0:5001
+    CONNECTION_STRING: null
+    DATABASE_TYPE: SQLServer
+    LOG_LEVEL: Information
+    METRIC_SERVER_HOST: '*:9000'
+    METRICS_ALARM_PUBLISH_COUNTER: metrics_alarm_publish_counter
+    METRICS_ALARM_READ_COUNTER: metrics_alarm_read_counter
+    NATS_ACK_WAIT_MILLISECONDS: 60000
+    NATS_MAX_IN_FLIGHT: 5000
+    NATS_START_SEQUENCE: "-1"
+    RESTORE_BATCH_SIZE: 5000
+    RESTORE_CACHE: 500000
+    RESTORE_CACHE_REMOVAL_SIZE: 50000
+  servicedevicesync:
+    ASPNETCORE_URLS: http://0.0.0.0:5010
+    AppSettings__EndPointUrl: https://api-dev.epiroc.com/internal/myepirocdata/api/v1/ExternalService/allmachineswithusers
+    AppSettings__MeasurementUrl: servicemeasurement.default.svc.cluster.local:5002
+    AppSettings__RetryCountApi: "3"
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 3001
+    Serilog__MinimumLevel__Default: Information
+  serviceexport:
+    ASPNETCORE_URLS: http://*:5003;http://*:5016
+    FeatureManagement__DiagnosticsAppIntegration: false
+    REQUEST_TOKEN_PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    SERVICE_ENVIRONMENT: cloud_dev
+    SERVICE_TOKEN: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJFcGlyb2MiLCJpYXQiOjE1ODg4Mjg5NTksImV4cCI6MTY5OTM2OTYwMCwiYXVkIjpbIkV4cG9ydFNlcnZpY2UiLCJDZXJ0aXFDb25uZWN0b3IiLCJNaXJyb3JDb25uZWN0b3IiLCJTcGFya3BsdWdDb25uZWN0b3IiLCJTZW5zb3JDb25uZWN0b3IiXSwiZmVhdHVyZSI6WyJUZW5hbnRGcm9tVG9rZW4iXSwiZW52IjoiY2xvdWRfZGV2Iiwic2VydmljZSI6WyJFeHBvcnRTZXJ2aWNlIiwiQ2VydGlxQ29ubmVjdG9yIiwiTWlycm9yQ29ubmVjdG9yIiwiU3BhcmtwbHVnQ29ubmVjdG9yIiwiU2Vuc29yQ29ubmVjdG9yIl19.TAcnvY-B_aBweh_88SIguRPL5w6a64A5gq-aZNq0Rr_fipLKhPwpoTJV08TbgVz0hcuYUcbwr4C7S3kTl3dUBYYclP5U4MhQ6978T8y1WJgdnFV1mgC9FXKZ9LEk3xq8xKjlTKjiXVaifJjDqziRJJrG2P-Emb6ZiaITXFQHom-avytfHxP83EJmsEwHHLS-r182TwIPRh8JXQ5Ny3HOCQ8k_25THky-zDLIBfKW-q48espAm8hUBAoPate_qex6PzacvzsFK-VlV9ujbFT7nTB0t3cb6Xjqgc80DbYXcdYUF6C0Oeipbv63MJUF_w-KCN5JeA5Xky-CC2wc2Jca7Q
+    STAN_NATS_URL: nats://nats-client.default.svc.cluster.local:4222
+    Serilog__MinimumLevel__Default: Information
+  servicemeasurement:
+    ASPNETCORE_URLS: http://0.0.0.0:5002
+    AUTHORITY: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    DATABASE_NAME: measurementdatabase_v1
+    DATABASE_URL: http://10.46.68.174:8086
+    FeatureManagement__DiagnosticMonitoring: false
+    FeatureManagement__DiagnosticsAppIntegration: false
+    FeatureManagement__HydraulicAttachmentToolApi: true
+    FeatureManagement__ProductionReportApi: true
+    INFLUXDB_BATCHSIZE: "10000"
+    ISSUER: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    MEASUREMENT_TOPIC_SUB: measurement.v1
+    METADATA_CONNECTION_STRING: null
+    METADATA_DATABASE_TYPE: SQLServer
+    METRIC_SERVER_HOSTNAME: '*'
+    METRIC_SERVER_PORT: 5000
+    METRICS_PUBLISH_COUNTER_NAME: metrics_service_measurment_publish_counter
+    NATS_DURABLE_NAME: measurementservice20210614
+    PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+    RUNTIME_ENVIRONMENT: Cloud
+    Serilog__MinimumLevel__Default: Information
+    USER_CONNECTION_STRING: ""
+  serviceventilation:
+    ASPNETCORE_URLS: http://0.0.0.0:5007
+    Auth__Authority: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+    Auth__DisableAuthorization: false
+    Auth__Issuer: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+    LOG_LEVEL: Information
+    Nats__AlarmTopic: alarmrequest.v1
+    Nats__MaxInFlight: 10000
+    Nats__MeasurementTopic: measurement.v1
+    Nats__NatsAckWait: 30000
+    Nats__NatsAlarmClientId: ServiceVentilation_Cloud2
+    Nats__NatsDurableName: ServiceVentilation
+    Nats__NatsMeasurementClientId: ServiceVentilation_Cloud1
+    Nats__StartAt__DateTime: "2021-03-01"
+    Persistence__Type: SqlServer
+    Prometheus__Hostname: '*'
+    Prometheus__Port: 5019
+  shared:
+    NATS_CLUSTER_NAME: NATS-cluster
+    NATS_URL: nats://nats-client.default.svc.cluster.local:4222
+    PUBLIC_KEY: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+  toolssimulator:
+    ASPNETCORE_URLS: http://0.0.0.0:5020
+    AcceptedMachines: "8813591801"
+    CONFIGURATION_FILE_PATH: defaultConfig.json
+    METRIC_PORT: 5091
+    RESTART_DELAY_MS: 30000
+    SERILOG_LOG_LEVEL: Information
+    STAN_CLIENT_ID: Simulator
+    STAN_TOPIC_PUB: measurement.v1
+fluentbit:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  deployment:
+    updateType: RollingUpdate
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/fluent/fluent-bit
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 24223
+    successThreshold: 1
+    timeoutSeconds: 10
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 10
+    periodSeconds: 20
+    port: 24223
+    successThreshold: 1
+    timeoutSeconds: 10
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 24223
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+grafana:
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/iop-grafana
+    tag: cloud-rc-1.1.2
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - iop-dev-monitor.epiroc.group
+    labels: null
+    path: /(.*)
+    tls:
+    - hosts:
+      - iop-dev-monitor.epiroc.group
+      secretName: grafana-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    annotations: {}
+    labels: {}
+    port: 3000
+    portName: service
+    targetPort: 3000
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+ingressnginx:
+  commonLabels: {}
+  controller:
+    addHeaders: {}
+    admissionWebhooks:
+      annotations: {}
+      certificate: /usr/local/certificates/cert
+      createSecretJob:
+        resources: {}
+      enabled: true
+      existingPsp: ""
+      failurePolicy: Fail
+      key: /usr/local/certificates/key
+      labels: {}
+      namespaceSelector: {}
+      objectSelector: {}
+      patch:
+        enabled: true
+        fsGroup: 2000
+        image:
+          digest: sha256:64d8c73dca984af206adf9d6d7e46aa550362b1d7a01f3a0a91b20cc67868660
+          image: ingress-nginx/kube-webhook-certgen
+          pullPolicy: IfNotPresent
+          registry: k8s.gcr.io
+          tag: v1.1.1
+        labels: {}
+        nodeSelector:
+          kubernetes.io/os: linux
+        podAnnotations: {}
+        priorityClassName: ""
+        runAsUser: 2000
+        tolerations: []
+      patchWebhookJob:
+        resources: {}
+      port: 8443
+      service:
+        annotations: {}
+        externalIPs: []
+        loadBalancerSourceRanges: []
+        servicePort: 443
+        type: ClusterIP
+    affinity: {}
+    allowSnippetAnnotations: true
+    annotations: {}
+    autoscaling:
+      behavior: {}
+      enabled: false
+      maxReplicas: 11
+      minReplicas: 1
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+    autoscalingTemplate: []
+    config: {}
+    configAnnotations: {}
+    configMapNamespace: ""
+    containerName: controller
+    containerPort:
+      http: 80
+      https: 443
+    customTemplate:
+      configMapKey: ""
+      configMapName: ""
+    dnsConfig: {}
+    dnsPolicy: ClusterFirst
+    electionID: ingress-controller-leader
+    enableMimalloc: true
+    existingPsp: ""
+    extraArgs: {}
+    extraContainers: []
+    extraEnvs: []
+    extraInitContainers: []
+    extraModules: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    healthCheckHost: ""
+    healthCheckPath: /healthz
+    hostNetwork: false
+    hostPort:
+      enabled: false
+      ports:
+        http: 80
+        https: 443
+    hostname: {}
+    image:
+      allowPrivilegeEscalation: true
+      chroot: false
+      digest: sha256:d8196e3bc1e72547c5dec66d6556c0ff92a23f6d0919b206be170bc90d5f9185
+      digestChroot: sha256:fb17f1700b77d4fcc52ca6f83ffc2821861ae887dbb87149cf5cbc52bea425e5
+      image: ingress-nginx/controller
+      pullPolicy: IfNotPresent
+      registry: k8s.gcr.io
+      runAsUser: 101
+      tag: v1.2.0
+    ingressClass: nginx
+    ingressClassByName: false
+    ingressClassResource:
+      controllerValue: k8s.io/ingress-nginx
+      default: false
+      enabled: true
+      name: nginx
+      parameters: {}
+    keda:
+      apiVersion: keda.sh/v1alpha1
+      behavior: {}
+      cooldownPeriod: 300
+      enabled: false
+      maxReplicas: 11
+      minReplicas: 1
+      pollingInterval: 30
+      restoreToOriginalReplicaCount: false
+      scaledObject:
+        annotations: {}
+      triggers: []
+    kind: Deployment
+    labels: {}
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - /wait-shutdown
+    livenessProbe:
+      failureThreshold: 5
+      httpGet:
+        path: /healthz
+        port: 10254
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    maxmindLicenseKey: ""
+    metrics:
+      enabled: false
+      port: 10254
+      prometheusRule:
+        additionalLabels: {}
+        enabled: false
+        rules: []
+      service:
+        annotations: {}
+        externalIPs: []
+        loadBalancerSourceRanges: []
+        servicePort: 10254
+        type: ClusterIP
+      serviceMonitor:
+        additionalLabels: {}
+        enabled: false
+        metricRelabelings: []
+        namespace: ""
+        namespaceSelector: {}
+        relabelings: []
+        scrapeInterval: 30s
+        targetLabels: []
+    minAvailable: 1
+    minReadySeconds: 0
+    name: controller
+    nodeSelector:
+      kubernetes.io/os: linux
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext: {}
+    priorityClassName: ""
+    proxySetHeaders: {}
+    publishService:
+      enabled: true
+      pathOverride: ""
+    readinessProbe:
+      failureThreshold: 3
+      httpGet:
+        path: /healthz
+        port: 10254
+        scheme: HTTP
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 1
+    replicaCount: 1
+    reportNodeInternalIp: false
+    resources:
+      limits:
+        cpu: 200m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    scope:
+      enabled: false
+      namespace: ""
+      namespaceSelector: ""
+    service:
+      annotations: {}
+      appProtocol: true
+      enableHttp: true
+      enableHttps: true
+      enabled: true
+      external:
+        enabled: false
+      externalIPs: []
+      internal:
+        annotations:
+          service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+        enabled: true
+        loadBalancerIP: 10.78.25.70
+        loadBalancerSourceRanges: []
+      ipFamilies:
+      - IPv4
+      ipFamilyPolicy: SingleStack
+      labels: {}
+      loadBalancerSourceRanges: []
+      nodePorts:
+        http: ""
+        https: ""
+        tcp: {}
+        udp: {}
+      ports:
+        http: 80
+        https: 443
+      targetPorts:
+        http: http
+        https: https
+      type: LoadBalancer
+    shareProcessNamespace: false
+    sysctls: {}
+    tcp:
+      annotations: {}
+      configMapNamespace: ""
+    terminationGracePeriodSeconds: 300
+    tolerations: []
+    topologySpreadConstraints: []
+    udp:
+      annotations: {}
+      configMapNamespace: ""
+    updateStrategy: {}
+    watchIngressWithoutClass: false
+  defaultBackend:
+    affinity: {}
+    autoscaling:
+      annotations: {}
+      enabled: false
+      maxReplicas: 2
+      minReplicas: 1
+      targetCPUUtilizationPercentage: 50
+      targetMemoryUtilizationPercentage: 50
+    containerSecurityContext: {}
+    enabled: false
+    existingPsp: ""
+    extraArgs: {}
+    extraEnvs: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    image:
+      allowPrivilegeEscalation: false
+      image: defaultbackend-amd64
+      pullPolicy: IfNotPresent
+      readOnlyRootFilesystem: true
+      registry: k8s.gcr.io
+      runAsNonRoot: true
+      runAsUser: 65534
+      tag: "1.5"
+    labels: {}
+    livenessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    minAvailable: 1
+    name: defaultbackend
+    nodeSelector:
+      kubernetes.io/os: linux
+    podAnnotations: {}
+    podLabels: {}
+    podSecurityContext: {}
+    port: 8080
+    priorityClassName: ""
+    readinessProbe:
+      failureThreshold: 6
+      initialDelaySeconds: 0
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    replicaCount: 1
+    resources: {}
+    service:
+      annotations: {}
+      externalIPs: []
+      loadBalancerSourceRanges: []
+      servicePort: 80
+      type: ClusterIP
+    serviceAccount:
+      automountServiceAccountToken: true
+      create: true
+      name: ""
+    tolerations: []
+  dhParam: null
+  imagePullSecrets: []
+  podSecurityPolicy:
+    enabled: false
+  rbac:
+    create: true
+    scope: false
+  revisionHistoryLimit: 10
+  serviceAccount:
+    annotations: {}
+    automountServiceAccountToken: true
+    create: true
+    name: ""
+  tcp: {}
+  udp: {}
+jetstream:
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/jetstream
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 3910m
+      memory: 8Gi
+    requests:
+      cpu: 100m
+      memory: 512Mi
+  securityContext: {}
+  service:
+    port: 4223
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+logger:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/interoperability_logger
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9020
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: ""
+  tolerations: []
+loki:
+  affinity: {}
+  alerting_groups: []
+  annotations: {}
+  client: {}
+  config:
+    auth_enabled: false
+    chunk_store_config:
+      max_look_back_period: 0s
+    compactor:
+      shared_store: filesystem
+      working_directory: /data/loki/boltdb-shipper-compactor
+    ingester:
+      chunk_block_size: 262144
+      chunk_idle_period: 3m
+      chunk_retain_period: 1m
+      lifecycler:
+        ring:
+          kvstore:
+            store: inmemory
+          replication_factor: 1
+      max_transfer_retries: 0
+    limits_config:
+      enforce_metric_name: false
+      reject_old_samples: true
+      reject_old_samples_max_age: 168h
+    schema_config:
+      configs:
+      - from: "2020-10-24"
+        index:
+          period: 24h
+          prefix: index_
+        object_store: filesystem
+        schema: v11
+        store: boltdb-shipper
+    server:
+      http_listen_port: 3100
+    storage_config:
+      boltdb_shipper:
+        active_index_directory: /data/loki/boltdb-shipper-active
+        cache_location: /data/loki/boltdb-shipper-cache
+        cache_ttl: 24h
+        shared_store: filesystem
+      filesystem:
+        directory: /data/loki/chunks
+    table_manager:
+      retention_deletes_enabled: false
+      retention_period: 0s
+  env: []
+  extraArgs: {}
+  extraContainers: []
+  extraPorts: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    pullPolicy: IfNotPresent
+    repository: grafana/loki
+    tag: 2.0.0
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  initContainers: []
+  livenessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  networkPolicy:
+    enabled: false
+  nodeSelector: {}
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    enabled: false
+    size: 10Gi
+  podAnnotations:
+    prometheus.io/port: http-metrics
+    prometheus.io/scrape: "true"
+  podDisruptionBudget: {}
+  podLabels: {}
+  podManagementPolicy: OrderedReady
+  rbac:
+    create: true
+    pspEnabled: true
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 45
+  replicas: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext:
+    fsGroup: 10001
+    runAsGroup: 10001
+    runAsNonRoot: true
+    runAsUser: 10001
+  service:
+    annotations: {}
+    labels: {}
+    nodePort: null
+    port: 3100
+    targetPort: http-metrics
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  serviceMonitor:
+    additionalLabels: {}
+    annotations: {}
+    enabled: false
+    interval: ""
+  terminationGracePeriodSeconds: 4800
+  tolerations: []
+  tracing:
+    jaegerAgentHost: null
+  updateStrategy:
+    type: RollingUpdate
+natsbackuptool:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/nats_backup_restore_tool
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 80
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+natsclient:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  diskMonitor:
+    alerts:
+    - mount: /nats
+      threshold: 90
+    command:
+    - --collectors.enabled=diskstats,filesystem
+    enabled: true
+    image: prom/node-exporter
+    name: disk-monitor
+    port:
+      containerPort: 9100
+      name: default
+      protocol: TCP
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/stan
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  monitoring:
+    service:
+      annotations: {}
+      loadBalancerIP: null
+      port: 8222
+      type: ClusterIP
+  nameOverride: ""
+  node_exporter:
+    service:
+      port: 9100
+      type: ClusterIP
+  nodeSelector: {}
+  persistentVolumes:
+  - mount: /nats
+    name: dsk-iopnats-weeu-dev-002-pvc
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 3910m
+      memory: 8Gi
+    requests:
+      cpu: 100m
+      memory: 4Gi
+  securityContext: {}
+  service:
+    port: 4222
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+natsexporter:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  config:
+    metrics:
+      channelz: true
+      connz: true
+      gatewayz: true
+      routez: true
+      serverz: true
+      subz: true
+      varz: true
+    nats:
+      namespace: default
+      port: 8222
+      service: nats-monitoring
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: natsio/prometheus-nats-exporter
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 7777
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+processorhandler:
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/processor_handlers
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+processoringestion:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/processor_ingestion
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 40
+    port: 9001
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 9001
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    clusterIP: processoringestion.default.svc.cluster.local
+    port: 9001
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+prometheus:
+  affinity: {}
+  diskMonitor:
+    alerts:
+    - mount: /prometheus
+      threshold: 90
+    command:
+    - --collectors.enabled=diskstats,filesystem
+    enabled: true
+    image: prom/node-exporter
+    name: disk-monitor
+    port:
+      containerPort: 9100
+      name: default
+      protocol: TCP
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/prometheus
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  persistentVolumes:
+  - mount: /prometheus
+    name: dsk-iopprometheus-weeu-dev-001-pvc
+  podSecurityContext:
+    fsGroup: 65534
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 9090
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceaemp:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/aemp
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /aemp/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - iop-dev-apigateway.epiroc.group
+    labels: null
+    path: /aemp/(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5004
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+servicealarms:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_alarms
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5001
+    prometheusPort: 9000
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  tolerations: []
+servicedevicesync:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/devicesync
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5010
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceexport:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_export
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5003
+    prometheusPort: 5016
+    type: ClusterIP
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: null
+  tolerations: []
+servicemeasurement:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_measurement
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  livenessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 40
+    port: 5002
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  readinessProbe:
+    initialDelaySeconds: 60
+    periodSeconds: 20
+    port: 5002
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5002
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+serviceventilation:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/service_ventilation
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /ventilation/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: false
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /ventilation/(.*)
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5007
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+toolssimulator:
+  DeploymentStrategy: Recreate
+  affinity: {}
+  fullnameOverride: ""
+  image:
+    pullPolicy: Always
+    repository: dcrinfraweeudev001.azurecr.io/tools_simulator
+    tag: latest
+  imagePullSecrets: []
+  ingress:
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/rewrite-target: /simulator/$1
+      nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    enabled: true
+    hosts:
+    - host: iop-dev-apigateway.epiroc.group
+    path: /simulator/(.*)
+    port: 5020
+    tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  nameOverride: ""
+  nodeSelector: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  securityContext: {}
+  service:
+    port: 5020
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: null
+  tolerations: []
+
+HOOKS:
+---
+# Source: apigateway/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "apigateway-test-connection"
+  labels:
+
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: apigateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['apigateway:5005']
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: apigateway/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: apigateway
+  labels:
+
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: apigateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: apigateway/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: apigateway
+  labels:
+    app: apigateway-app
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: /metrics
+    prometheus.io/port: "5011"
+spec:
+  type: ClusterIP
+  
+  ports:
+    - name: http
+      port: 5005
+    - name: metric
+      port: 5011
+  selector:
+    app: apigateway-app
+---
+# Source: apigateway/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apigateway
+  labels:
+    helm.sh/chart: apigateway-0.1.0
+    app.kubernetes.io/name: apigateway
+    app.kubernetes.io/instance: apigateway
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apigateway-app
+  strategy:
+    type: Recreate     
+  template:
+    metadata:
+      labels:
+        app: apigateway-app
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5011"
+    spec:
+      serviceAccountName: apigateway
+      securityContext:
+        {}
+      containers:
+        - name: apigateway
+          securityContext:
+            {}
+          image: "dcrinfraweeudev001.azurecr.io/api_gateway:latest"
+          imagePullPolicy: Always
+          env:
+            - name: MEASUREMENT_URL
+              value: servicemeasurement.default.svc.cluster.local:5002 
+            - name: NATS_URL
+              value: nats://nats-client.default.svc.cluster.local:4222 
+            - name: NATS_CLUSTER_NAME
+              value: NATS-cluster
+            - name: METRIC_SERVER_HOSTNAME
+              value: "*"
+            - name: METRIC_SERVER_PORT
+              value: "5011"
+            - name: ASPNETCORE_URLS
+              value: http://0.0.0.0:5005;http://0.0.0.0:5011
+            - name: PUBLIC_KEY
+              value: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtEBaPKQ4nr208muLSveKqubPROaikzM5JASX17rTk3YP9EWiPcRaM4ccywfFjj3UNM5E/KjxHuFt8YpopAj3KiSvBlTVbUKolVkDDODF0yLk5PleNyN96FjOX3/ntLS9Ski5yY1iyLOr3SULWO9yh2cJkDuOVB1x/6fY6spxOGHEBLj42XJ93XUNGTXeled8AKW0uYgq3hiRMruZZbs0lfqSZpqsYvp/dm2Hvf5chhzfl4iHoY0V0K2RvVS+BPfrjMANq0LvbUSPRmlybDfPEFktKf1otpkZu51b8I1l6ZGeCo1UGw3UiTPrOjcKsEjzwVIcNwJX1cHb5YdLOmFvJwIDAQAB
+            - name: LOG_LEVEL
+              value: 
+            - name: RUNTIME_ENVIRONMENT
+              value: Cloud
+            - name: AUTHORITY
+              value: https://epirocb2cqa.b2clogin.com/epirocb2cqa.onmicrosoft.com/b2c_1a_v1_signinjit
+            - name: ISSUER
+              value: https://epirocb2cqa.b2clogin.com/a03233f2-a763-470e-9cc4-fa47e2b182a1/v2.0/
+            - name: REDIS_CONNECTION_STRING
+              valueFrom:
+               secretKeyRef:
+                 name: connection-string-tenant-redis-dev
+                 key: password   
+            - name: FeatureManagement__AnalyticsAPI
+              value: "true"
+            - name: FeatureManagement__AlarmAPI
+              value: "true"
+            - name: FeatureManagement__ShiftReportAPI
+              value: "true"
+            - name: FeatureManagement__ProductionReportAPI
+              value: "true"                
+            - name: FeatureManagement__DiagnosticsAppIntegration
+              value: "false"
+            - name: FeatureManagement__DiagnosticMonitoring
+              value: "false"
+            - name: FeatureManagement__BatteryAsset
+              value: "true"
+            - name: ReverseProxy__Routes__route1__ClusterId
+              value: cluster1         
+            - name: ReverseProxy__Routes__route1__Match__Path
+              value: /ventilation/{*remainder}       
+            - name: ReverseProxy__Routes__route1__Transforms__0__PathPattern
+              value: /{remainder}
+            - name: ReverseProxy__Clusters__cluster1__Destinations__default_destination__Address
+              value: http://serviceventilation.default.svc.cluster.local:5007
+            - name: NORTHVOLT_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: northvolt-apikey
+                  key: password
+            - name: NORTHVOLT_INTEGRATION
+              value: epiroc
+            - name: NORTHVOLT_URL
+              value: https://batcloud.cb-prod.aws.nvlt.co/query
+          ports:
+            - name: http
+              containerPort: 5005
+              # protocol: TCP
+          livenessProbe:
+              tcpSocket:
+                port: 5005
+              initialDelaySeconds: 15
+              periodSeconds: 20
+          readinessProbe:
+              tcpSocket:
+                port: 5005
+              initialDelaySeconds: 5
+              periodSeconds: 10
+          resources:
+            {}
+---
+# Source: apigateway/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apigateway-ingress
+  namespace: default
+  labels:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+    - hosts:
+      - iop-dev-apigateway.epiroc.group
+      secretName: apigateway-ingress-tls
+  rules:
+  - host: iop-dev-apigateway.epiroc.group
+    http:
+      paths:
+      - path: /(.*) 
+        pathType: Prefix     
+        backend:
+          service:
+            name: apigateway
+            port:
+              number: 5005
+---
+# Source: apigateway/templates/servicemonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: apigateway-servicemonitor
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: apigateway-app
+  endpoints:
+    - port: metric
+
+NOTES:
+1. Get the application URL by running these commands:

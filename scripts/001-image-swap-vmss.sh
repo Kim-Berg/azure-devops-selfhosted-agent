@@ -18,17 +18,6 @@ function usage {
     echo "   -u     unattended (script will not ask for input)" 1>&2; exit 1;
 }
 
-function blue_green_swap {
-    # 1 = vmss name
-    # 2 = vmss rg
-    # 3 = image reference
-    printf "${COLOUR}Set ${1} to blue green image...${NC}\n"
-    printf "az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}\n"
-    az vmss update --resource-group ${2} --name ${1} --set virtualMachineProfile.storageProfile.imageReference.id=${3}
-    az vmss update-instances --resource-group ${2} --name ${1} --instance-ids '*'
-    sleep 5;
-}
-
 function clean_blue_green_image {
     # 1 = image reference to delete
     printf "${COLOUR}Cleaning up blue green image...${NC}\n"
@@ -90,23 +79,28 @@ if [[ -z ${MANIFEST_PATH} ]] || [[ -z ${IMAGE_ID} ]] || [[ -z ${VMSS_NAME} ]] ||
     if [[ ${UNATTENDED} ]]; then
         case ${CURRENT_STAGE} in
             "first")
-                blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
+                # change scale set to dummy image
+                update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                 ;;
             "second")
+                # set scale set to the recently updated image
                 update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                 clean_blue_green_image "${IMAGE_ID}"
                 ;;
         esac
     else
+        # run script in interactive mode
         read -p "Do you wish to continue Yes/No? " yn
         while true; do
             case $yn in
                 Yes )
                     case ${CURRENT_STAGE} in
                         "first")
-                            blue_green_swap "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
+                            # change scale set to dummy image
+                            update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                             ;;
                         "second")
+                            # set scale set to the recently updated image
                             update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
                             clean_blue_green_image "${IMAGE_ID}"
                             ;;
