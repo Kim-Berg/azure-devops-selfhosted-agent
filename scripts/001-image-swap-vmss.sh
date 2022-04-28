@@ -55,9 +55,9 @@ while getopts "i:u" o; do
     esac
 done
 
-if [[ -f ${MANIFEST_PATH} ]] && [[ ${MANIFEST_PATH} == *"bluegreen"* ]]; then
+if [[ -f ${MANIFEST_PATH} ]] && [[ ${MANIFEST_PATH} == *"blue"* ]]; then
     CURRENT_STAGE="first"
-elif [[ -f ${MANIFEST_PATH} ]] && [[ ! ${MANIFEST_PATH} == *"bluegreen"* ]]; then
+elif [[ -f ${MANIFEST_PATH} ]] && [[ ! ${MANIFEST_PATH} == *"green"* ]]; then
     CURRENT_STAGE="second"
 else
     printf "ERROR: The current given manifest filepath does not exists: ${MANIFEST_PATH}\n"
