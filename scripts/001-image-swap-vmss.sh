@@ -57,7 +57,7 @@ done
 
 if [[ -f ${MANIFEST_PATH} ]] && [[ ${MANIFEST_PATH} == *"blue"* ]]; then
     CURRENT_STAGE="first"
-elif [[ -f ${MANIFEST_PATH} ]] && [[ ! ${MANIFEST_PATH} == *"green"* ]]; then
+elif [[ -f ${MANIFEST_PATH} ]] && [[ ${MANIFEST_PATH} == *"green"* ]]; then
     CURRENT_STAGE="second"
 else
     printf "ERROR: The current given manifest filepath does not exists: ${MANIFEST_PATH}\n"
@@ -85,7 +85,7 @@ if [[ -z ${MANIFEST_PATH} ]] || [[ -z ${IMAGE_ID} ]] || [[ -z ${VMSS_NAME} ]] ||
             "second")
                 # set scale set to the recently updated image
                 update_scale_set "${VMSS_NAME}" "${VMSS_RG}" "${IMAGE_ID}"
-                clean_blue_green_image "${IMAGE_ID}"
+                # clean_blue_green_image "${IMAGE_ID}"
                 ;;
         esac
     else

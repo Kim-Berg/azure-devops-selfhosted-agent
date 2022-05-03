@@ -1,5 +1,3 @@
 env="dev"
 resource_group_name="ben-packer-weeu-lab-001"
 location="westeurope"
-target_scale_set_name="devopsagent-vmss-weeu-dev-001"
-target_scale_set_rg="ben-packer-weeu-lab-001"

@@ -13,8 +13,6 @@ variable "ansible_playbook_path" {
   default="../../build_config"
 }
 
-variable "linux_image_offer"
-
 locals {
   location_abbreviations = {
     "westeurope"  = "weeu",
@@ -29,77 +27,71 @@ locals {
 # source block configures a specific builder plugin, which is then invoked by a build block.
 {% if dsc.builds_linux_enable == true %}
 source "azure-arm" "agent-ubuntu" {
-  client_id       = {{ dsc.client_id }}
-  client_secret   = {{ dsc.client_secret }}
-  tenant_id       = {{ dsc.tenant_id }}
-  subscription_id = {{ dsc.subscription_id }}
+  client_id       = "{{ dsc.client_id }}"
+  client_secret   = "{{ dsc.client_secret }}"
+  tenant_id       = "{{ dsc.tenant_id }}"
+  subscription_id = "{{ dsc.subscription_id }}"
 
-{% if dsc.builds.builds_use_target_rg_for_build == true %}
-  build_resource_group_name = {{ dsc.target_resource_group }}
-{% else %}
+{%- if dsc.builds_use_target_rg_for_build == true %}
+  build_resource_group_name = {{ dsc.builds_target_resource_group }}
+{%- else %}
   location = {{ dsc.deployment_location }}
-{% endif %}
-  managed_image_resource_group_name  = {{ dsc.target_resource_group }}
+{%- endif %}
+  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
   managed_image_name                 = local.managed_image_name_linux
   managed_image_storage_account_type = "Standard_LRS"
-
   os_type         = "Linux"
-  image_publisher = {{ dsc.builds_linux_image_publisher }}
-  image_offer     = {{ dsc.builds_linux_image_offer }}
-  image_sku       = {{ dsc.builds_linux_image_sku }}
-
-  vm_size  = {{ dsc.builds_linux_vm_size }}
+  image_publisher = "{{ dsc.builds_linux_image_publisher }}"
+  image_offer     = "{{ dsc.builds_linux_image_offer }}"
+  image_sku       = "{{ dsc.builds_linux_image_sku }}"
+  vm_size  = "{{ dsc.builds_linux_vm_size }}"
 }
-{% endif %}
-
+{%- endif %}
 {% if dsc.builds_windows_enable == true %}
 source "azure-arm" "agent-windows" {
-  client_id       = {{ dsc.client_id }}
-  client_secret   = {{ dsc.client_secret }}
-  tenant_id       = {{ dsc.tenant_id }}
-  subscription_id = {{ dsc.subscription_id }}
-
-{% if dsc.builds.builds_use_target_rg_for_build == true %}
-  build_resource_group_name = {{ dsc.target_resource_group }}
-{% else %}
+  client_id       = "{{ dsc.client_id }}"
+  client_secret   = "{{ dsc.client_secret }}"
+  tenant_id       = "{{ dsc.tenant_id }}"
+  subscription_id = "{{ dsc.subscription_id }}"
+{%- if dsc.builds_use_target_rg_for_build == true %}
+  build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
+{%- else %}
   location = {{ dsc.deployment_location }}
-{% endif %}
-
-  managed_image_resource_group_name  = {{ dsc.target_resource_group }}
+{%- endif %}
+  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
   managed_image_name                 = local.managed_image_name_windows
   managed_image_storage_account_type = "Standard_LRS"
-
   os_type         = "Windows"
-  image_publisher = {{ dsc.builds_linux_image_publisher }}
-  image_offer     = {{ dsc.builds_linux_image_offer }}
-  image_sku       = {{ dsc.builds_linux_image_sku }}
-
-  vm_size  = {{ dsc.builds_windows_vm_size }}
-
+  image_publisher = "{{ dsc.builds_windows_image_publisher }}"
+  image_offer     = "{{ dsc.builds_windows_image_offer }}"
+  image_sku       = "{{ dsc.builds_windows_image_sku }}"
+  vm_size  = "{{ dsc.builds_windows_vm_size }}"
   communicator   = "winrm"
   winrm_insecure = true
   winrm_username = "packer"
   winrm_use_ssl  = true
 }
-{% endif %}
-
+{%- endif %}
 
 # The build block defines what Packer should do with the Docker container after it launches.
 build {
   name = "self-hosted-build-agents"
   sources = [
-    {%- if  -%}"source.azure-arm.agent-ubuntu"{%- endif -%},
-    {%- if  -%}"source.azure-arm.agent-windows"{%- endif -%},
+    {%- if dsc.builds_linux_enable -%}"source.azure-arm.agent-ubuntu",{%- endif -%}
+    {%- if dsc.builds_windows_enable -%}"source.azure-arm.agent-windows",{%- endif -%}
   ]
-{% raw %}
+  {%- if dsc.builds_linux_enable %}
   provisioner "ansible" {
     use_proxy               = false
     playbook_file           = "${var.ansible_playbook_path}/playbook.yaml"
     inventory_directory     = "${var.ansible_playbook_path}/"
+  {%- raw %}
     inventory_file_template = "{{ .HostAlias }} ansible_host={{ .Host }} ansible_user={{ .User }} ansible_port={{ .Port }} ansible_become=true"
+  {%- endraw %}
     only                    = ["azure-arm.agent-ubuntu"]
   }
-
+  {%- endif %}
+  {% if dsc.builds_windows_enable %}
   provisioner "ansible" {
     playbook_file   = "ansible/playbook.yaml"
     user            = "Administrator"
@@ -108,10 +100,9 @@ build {
       "-e",
       "ansible_winrm_server_cert_validation=ignore"
     ]
-
     only = ["azure-arm.agent-windows"]
   }
-
+  {% endif %}
   post-processor "manifest" {
       output = "manifest.json"
       strip_path = true
@@ -122,4 +113,3 @@ build {
       }
   }
 }
-{% endraw %}

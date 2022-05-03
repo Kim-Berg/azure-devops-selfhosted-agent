@@ -1,0 +1,94 @@
+packer {
+  required_plugins {
+    azure-rm = {
+      version = ">= 1.0.6"
+      source  = "github.com/hashicorp/azure"
+    }
+  }
+}
+
+variable "ansible_playbook_path" {
+  type = string
+  description = "Specifies where ansible playbooks are located"
+  default="../../build_config"
+}
+
+locals {
+  location_abbreviations = {
+    "westeurope"  = "weeu",
+    "northeurope" = "noeu",
+    "westus"      = "weus",
+    "westus"      = "weus"
+  }
+  blue_green_img_linux       = "linuxbg-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  blue_green_img_windows     = "windowsbg-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+}
+
+# source block configures a specific builder plugin, which is then invoked by a build block.
+{% if dsc.builds_linux_enable == true %}
+source "azure-arm" "agent-ubuntu-blue" {
+  client_id       = "{{ dsc.client_id }}"
+  client_secret   = "{{ dsc.client_secret }}"
+  tenant_id       = "{{ dsc.tenant_id }}"
+  subscription_id = "{{ dsc.subscription_id }}"
+
+{%- if dsc.builds_use_target_rg_for_build == true %}
+  build_resource_group_name = {{ dsc.builds_target_resource_group }}
+{%- else %}
+  location = {{ dsc.deployment_location }}
+{%- endif %}
+  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
+  managed_image_name                 = local.managed_image_name_linux
+  managed_image_storage_account_type = "Standard_LRS"
+  os_type         = "Linux"
+  image_publisher = "{{ dsc.builds_linux_image_publisher }}"
+  image_offer     = "{{ dsc.builds_linux_image_offer }}"
+  image_sku       = "{{ dsc.builds_linux_image_sku }}"
+  vm_size  = "{{ dsc.builds_linux_vm_size }}"
+}
+{%- endif %}
+{% if dsc.builds_windows_enable == true %}
+source "azure-arm" "agent-windows-blue" {
+  client_id       = "{{ dsc.client_id }}"
+  client_secret   = "{{ dsc.client_secret }}"
+  tenant_id       = "{{ dsc.tenant_id }}"
+  subscription_id = "{{ dsc.subscription_id }}"
+{%- if dsc.builds_use_target_rg_for_build == true %}
+  build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
+{%- else %}
+  location = {{ dsc.deployment_location }}
+{%- endif %}
+  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
+  managed_image_name                 = local.managed_image_name_windows
+  managed_image_storage_account_type = "Standard_LRS"
+  os_type         = "Windows"
+  image_publisher = "{{ dsc.builds_windows_image_publisher }}"
+  image_offer     = "{{ dsc.builds_windows_image_offer }}"
+  image_sku       = "{{ dsc.builds_windows_image_sku }}"
+  vm_size  = "{{ dsc.builds_windows_vm_size }}"
+  communicator   = "winrm"
+  winrm_insecure = true
+  winrm_username = "packer"
+  winrm_use_ssl  = true
+}
+{%- endif %}
+
+
+# The build block defines what Packer should do with the Docker container after it launches.
+build {
+  name = "self-hosted-build-agents"
+  sources = [
+    {%- if dsc.builds_linux_enable -%}"source.azure-arm.agent-ubuntu-blue",{%- endif -%}
+    {%- if dsc.builds_windows_enable -%}"source.azure-arm.agent-windows-blie",{%- endif -%}
+  ]
+
+  post-processor "manifest" {
+      output = "manifest.json"
+      strip_path = true
+      custom_data = {
+          source_image_name = "${build.SourceImageName}"
+          target_vmss_name = "${var.target_scale_set_name}"
+          target_vmss_rg = "${var.target_scale_set_rg}"
+      }
+  }
+}

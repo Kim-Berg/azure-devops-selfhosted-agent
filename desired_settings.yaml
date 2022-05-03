@@ -1,19 +1,18 @@
 ---
 deployment:
-  name: esml-build-agents
+  name: esml-build-script-debug
   environment: dev
-  managed_image_name: 
   location: "westeurope"
   agent_type: "AzureDevOps"
 
 scale_set:
   new_instance: false
   settings:
-    resource_group: General_Ben
-    name: "ado-agent-lab"
+    resource_group: ben-packer-weeu-lab-001
+    name: "vmss-packer-weeu-lab-001"
 
 builds:
-  target_resource_group: "General_Ben"
+  target_resource_group: "ben-packer-weeu-lab-001"
   # toggle weither to use location or target resource group
   # for build. This choice depends on RBAC scope.
   use_target_rg_for_build: true
@@ -24,6 +23,13 @@ builds:
     vm_size: Standard_B1s
     enable: true
     config:
+      compile_from_source:
+        - name: python36
+          url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
+      install_scripts:
+        - name: docker-compose
+          url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
+          dst_folder: /usr/local/bin/docker-compose
       gpg_packages:
         - name: docker
           url: https://download.docker.com/linux/ubuntu/gpg
@@ -38,14 +44,26 @@ builds:
         - name: azure-cli
           content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
           filename: azure-cli.list
-      packages: []
+      packages:
+        - name: git
+          version: '*'
+        - name: make
+          version: '*'
+        - name: azure-cli
+          version: '*'
+        - name: docker-ce
+          version: '*'
+        - name: docker-ce-cli
+          version: '*'
+        - name: containerd.io
+          version: '*'
 
   windows:
-    enable: false
+    enable: true
     image_publisher: MicrosoftWindowsServer
     image_offer: WindowsServer
     image_sku: 2022-datacenter
-    vm_size: 20348.587.220303
+    vm_size: Standard_B1s
     config:
       image_offer: 2022-datacenter
       powershell_modules:
