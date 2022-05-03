@@ -1,9 +1,8 @@
 import os
-from yaml import load, dump
-from pprint import pprint
+from yaml import load
 from collections.abc import MutableMapping
 
-from jinja2 import Environment, FileSystemLoader, TemplateAssertionError
+from jinja2 import Environment, FileSystemLoader
 
 try:
     from yaml import CLoader as Loader

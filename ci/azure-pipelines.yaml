@@ -16,10 +16,10 @@ variables:
     # ------ Do change variables below --------
     # See "service connections" under Azure DevOps organization settings
     - name: service_connection
-      value: 'gold-partner-subscription'
+      value: 'azure-devops-demo-sp'
 
 stages:
-  - stage: Build
+  - stage: SwapAndReplace
     jobs:
     - job: CreateImage
       steps:
@@ -30,36 +30,90 @@ stages:
         displayName: 'Packer version'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
           command: version
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer init'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
           command: init
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer validate'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
           command: validate
-          variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.pkr.hcl'
-          variables-file: '$(Build.Repository.LocalPath)/images/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
+          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
           force: true
+
+      - task: AzureCLI@2
+        displayName: SwapToBlueImage
+        inputs:
+          azureSubscription: '$(service_connection)'
+          scriptType: 'bash'
+          scriptLocation: 'scriptPath'
+          scriptPath: '$(Build.Repository.LocalPath)/scripts/001-image-swap-vmss.sh'
+          arguments: '-u -i $(Build.Repository.LocalPath)/manifest-blue.json'
+
+      - task: riezebosch.Packer.PackerTool.PackerTool@0
+        displayName: 'Use Packer Latest'
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer version'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          command: version
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer init'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          command: init
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer validate'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          command: validate
+          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
+
+      - task: riezebosch.Packer.Packer.Packer@1
+        displayName: 'Packer build'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
+          force: true
+
+      - task: AzureCLI@2
+        displayName: SwapToGreenImage
+        inputs:
+          azureSubscription: '$(service_connection)'
+          scriptType: 'bash'
+          scriptLocation: 'scriptPath'
+          scriptPath: '$(Build.Repository.LocalPath)/scripts/001-image-swap-vmss.sh'
+          arguments: '-u -i $(Build.Repository.LocalPath)/manifest-green.json'
+
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(Build.Repository.LocalPath)/manifest.json'
+          rootFolderOrFile: '$(Build.Repository.LocalPath)'
           includeRootFolder: true
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -70,57 +124,3 @@ stages:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'drop'
           publishLocation: 'Container'
-
-  - stage: Release
-    jobs:
-    - job: UpdateAdoVirtualMachineScaleSet
-      steps:
-      - task: DownloadBuildArtifacts@1
-        inputs:
-          buildType: 'current'
-          downloadType: 'single'
-          artifactName: 'drop'
-          downloadPath: '$(System.ArtifactsDirectory)'
-
-      - task: ExtractFiles@1
-        inputs:
-          archiveFilePatterns: '$(System.ArtifactsDirectory)/**/*.zip'
-          destinationFolder: '$(System.ArtifactsDirectory)/content'
-          cleanDestinationFolder: true
-          overwriteExistingFiles: true
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: '$(service_connection)'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            function usage {
-                echo "Usage: $0 [ -i <manifest path> ]" 1>&2; exit 1;
-            }
-            COLOUR='\033[1;32m' # Green
-            NC='\033[0m' # No Color
-
-            MANIFEST_PATH=$(System.ArtifactsDirectory)/content/manifest.json
-            IMAGE_ID=$(jq '.builds[0].artifact_id' ${MANIFEST_PATH} | tr -d '"')
-            VMSS_NAME=$(jq '.builds[0].custom_data.target_vmss_name' ${MANIFEST_PATH} | tr -d '"')
-            VMSS_RG=$(jq '.builds[0].custom_data.target_vmss_rg' ${MANIFEST_PATH} | tr -d '"')
-            
-            printf "______ ${COLOUR}Current Settings${NC} ______\n"
-            printf "MANIFEST_PATH..${COLOUR}${MANIFEST_PATH}${NC}\n"
-            printf "IMAGE_ID.........${COLOUR}${IMAGE_ID}${NC}\n"
-            printf "TARGET_VMSS......${COLOUR}${VMSS_NAME}${NC}\n"
-            printf "TARGET_VMSS_RG...${COLOUR}${VMSS_RG}${NC}\n"
-            
-            if [[ -z ${MANIFEST_PATH} ]] || [[ -z ${IMAGE_ID} ]] || [[ -z ${VMSS_NAME} ]] || [[ -n ${VMSS_RG} ]]; then
-            
-                printf "re-image virtual machine scale set named ${VMSS_NAME}...\n"
-                printf "az vmss update --resource-group ${VMSS_RG} --name ${VMSS_NAME} --set virtualMachineProfile.storageProfile.imageReference.id=${IMAGE_ID}\n"
-                az vmss update --resource-group ${VMSS_RG} --name ${VMSS_NAME} --set virtualMachineProfile.storageProfile.imageReference.id=${IMAGE_ID}
-            
-                printf "updating running instances..."
-                printf "az vmss update-instances --resource-group ${VMSS_RG} --name ${VMSS_NAME} --instance-ids \"*\"\n"
-                az vmss update-instances --resource-group ${VMSS_RG} --name ${VMSS_NAME} --instance-ids "*"
-
-            else
-              usage
-            fi
