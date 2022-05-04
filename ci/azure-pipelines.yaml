@@ -23,6 +23,15 @@ stages:
     jobs:
     - job: CreateImage
       steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.10'
+          addToPath: true
+          architecture: 'x64'
+      - task: PythonScript@0
+        inputs:
+          scriptSource: 'filePath'
+          scriptPath: '$(Build.Repository.LocalPath)/templater.py'
       - task: riezebosch.Packer.PackerTool.PackerTool@0
         displayName: 'Use Packer Latest'
 
