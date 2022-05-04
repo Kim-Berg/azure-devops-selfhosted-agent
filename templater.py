@@ -41,8 +41,8 @@ class Template(object):
         green_hcl_template = self.env.get_template('green-image.hcl.j2')
         blue_hcl_template = self.env.get_template('blue-image.hcl.j2')
         # set destination path
-        blue_image_path = os.path.join(dst_path, 'blue-image.hcl')
-        green_image_path = os.path.join(dst_path, 'green-image.hcl')
+        blue_image_path = os.path.join(dst_path, 'blue-image.pkr.hcl')
+        green_image_path = os.path.join(dst_path, 'green-image.pkr.hcl')
         
         with open(green_image_path, 'w') as green_img:
             green_img.write(green_hcl_template.render(dsc=self.dsc))
@@ -62,17 +62,9 @@ os.chdir(dname)
 
 DESIRED_STATE_PATH=os.path.abspath('desired_settings.yaml')
 # Gathered from ENV
-ENV_CLIENT_ID=os.environ['AZURE_CLIENT_ID']
-ENV_CLIENT_SECRET=os.environ['AZURE_CLIENT_SECRET']
-ENV_TENANT_ID=os.environ['AZURE_TENANT_ID']
-ENV_SUBSCRIPTION_ID=os.environ['AZURE_SUBSCRIPTION_ID']
 
 with open(DESIRED_STATE_PATH, 'r') as stream:
     dsc = flatten(load(stream.read(), Loader=Loader))
-    dsc['client_id'] = ENV_CLIENT_ID
-    dsc['client_secret'] = ENV_CLIENT_SECRET
-    dsc['tenant_id'] = ENV_TENANT_ID
-    dsc['subscription_id'] = ENV_SUBSCRIPTION_ID
     agent_type = dsc["deployment_agent_type"]
 
     cac_path=os.path.abspath(os.path.join('.', 'build_config'))
@@ -89,7 +81,7 @@ with open(DESIRED_STATE_PATH, 'r') as stream:
         case "AzureDevOps":
             ado_instance = getattr(build, agent_type.lower())
             ado_instance(
-                dst_path=os.path.join(iac_path, agent_type)
+                dst_path=iac_path
             )
         case "Github":
             # just to show to scale out code

@@ -28,10 +28,15 @@ stages:
           versionSpec: '3.10'
           addToPath: true
           architecture: 'x64'
+
+      - script: python -m pip install --upgrade pip && python -m pip install -r $(Build.Repository.LocalPath)/requirements.txt
+        displayName: 'Upgrade pip and install requirements.txt'
+
       - task: PythonScript@0
         inputs:
           scriptSource: 'filePath'
           scriptPath: '$(Build.Repository.LocalPath)/templater.py'
+
       - task: riezebosch.Packer.PackerTool.PackerTool@0
         displayName: 'Use Packer Latest'
 
@@ -39,32 +44,28 @@ stages:
         displayName: 'Packer version'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
           command: version
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer init'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
           command: init
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer validate'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
           command: validate
-          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
-          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/blue-image.pkr.hcl'
-          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
-          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
+          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
           force: true
 
       - task: AzureCLI@2
@@ -83,31 +84,29 @@ stages:
         displayName: 'Packer version'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
           command: version
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer init'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
           command: init
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer validate'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
           command: validate
-          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/AzureDevOps/linux/green-image.pkr.hcl'
-          variables-file: '$(Build.Repository.LocalPath)/builds/AzureDevOps/ado-agents.auto.pkrvars.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
           force: true
 

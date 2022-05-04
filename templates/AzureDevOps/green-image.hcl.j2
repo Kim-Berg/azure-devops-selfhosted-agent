@@ -13,6 +13,28 @@ variable "ansible_playbook_path" {
   default="../../build_config"
 }
 
+variable "client_id" {
+  type        = string
+  description = "Specifies the service principal client-id"
+}
+
+variable "client_secret" {
+  type        = string
+  description = "Specifies the service principal secret"
+  sensitive   = true
+}
+
+variable "tenant_id" {
+  type        = string
+  description = "Specifies the Azure tenant id"
+}
+
+variable "subscription_id" {
+  type        = string
+  description = "Specifies the Azure subscription id where image should be saved"
+  sensitive   = true
+}
+
 locals {
   location_abbreviations = {
     "westeurope"  = "weeu",
@@ -20,17 +42,17 @@ locals {
     "westus"      = "weus",
     "westus"      = "weus"
   }
-  managed_image_name_linux   = "adolinux-img-${local.location_abbreviations[var.location]}-${var.env}-001"
-  managed_image_name_windows = "adowindows-img-${local.location_abbreviations[var.location]}-${var.env}-001"
+  green_img_linux   = "adolinux-img-${local.location_abbreviations["{{dsc.deployment_location}}"]}-{{dsc.deployment_environment}}-001"
+  green_img_windows = "adowindows-img-${local.location_abbreviations["{{dsc.deployment_location}}"]}-{{dsc.deployment_environment}}-001"
 }
 
 # source block configures a specific builder plugin, which is then invoked by a build block.
 {% if dsc.builds_linux_enable == true %}
 source "azure-arm" "agent-ubuntu" {
-  client_id       = "{{ dsc.client_id }}"
-  client_secret   = "{{ dsc.client_secret }}"
-  tenant_id       = "{{ dsc.tenant_id }}"
-  subscription_id = "{{ dsc.subscription_id }}"
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
 
 {%- if dsc.builds_use_target_rg_for_build == true %}
   build_resource_group_name = {{ dsc.builds_target_resource_group }}
@@ -38,7 +60,7 @@ source "azure-arm" "agent-ubuntu" {
   location = {{ dsc.deployment_location }}
 {%- endif %}
   managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
-  managed_image_name                 = local.managed_image_name_linux
+  managed_image_name                 = local.green_img_linux
   managed_image_storage_account_type = "Standard_LRS"
   os_type         = "Linux"
   image_publisher = "{{ dsc.builds_linux_image_publisher }}"
@@ -49,17 +71,17 @@ source "azure-arm" "agent-ubuntu" {
 {%- endif %}
 {% if dsc.builds_windows_enable == true %}
 source "azure-arm" "agent-windows" {
-  client_id       = "{{ dsc.client_id }}"
-  client_secret   = "{{ dsc.client_secret }}"
-  tenant_id       = "{{ dsc.tenant_id }}"
-  subscription_id = "{{ dsc.subscription_id }}"
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+  subscription_id = var.subscription_id
 {%- if dsc.builds_use_target_rg_for_build == true %}
   build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
 {%- else %}
   location = {{ dsc.deployment_location }}
 {%- endif %}
   managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
-  managed_image_name                 = local.managed_image_name_windows
+  managed_image_name                 = local.green_img_windows
   managed_image_storage_account_type = "Standard_LRS"
   os_type         = "Windows"
   image_publisher = "{{ dsc.builds_windows_image_publisher }}"
