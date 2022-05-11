@@ -5,18 +5,26 @@ deployment:
   location: "westeurope"
   agent_type: "AzureDevOps"
 
-scale_set:
-  new_instance: false
-  settings:
-    resource_group: ben-packer-weeu-lab-001
-    name: "vmss-packer-weeu-lab-001"
+target_scale_sets:
+  # collect all existing virtual machine scale sets that you want to upgrade with 
+  # a new image here.
+  - name: linux-scaleset01
+    settings:
+      resource_group: ben-packer-weeu-lab-001
+      name: "vmss-packer-weeu-lab-001"
+  - name: windows-scaleset01
+    settings:
+      resource_group: ben-packer-weeu-lab-001
+      name: "vmss-packer-weeu-lab-001"
 
 builds:
+  # where to save images
   target_resource_group: "ben-packer-weeu-lab-001"
   # toggle weither to use location or target resource group
-  # for build. This choice depends on RBAC scope.
+  # for build. This choice depends on RBAC scope of the service principal that is used.
   use_target_rg_for_build: true
   linux:
+    version: '0.1'
     image_publisher: Canonical
     image_offer: 0001-com-ubuntu-server-focal
     image_sku: 20_04-lts-gen2
@@ -60,6 +68,7 @@ builds:
 
   windows:
     enable: true
+    version: '0.1'
     image_publisher: MicrosoftWindowsServer
     image_offer: WindowsServer
     image_sku: 2022-datacenter

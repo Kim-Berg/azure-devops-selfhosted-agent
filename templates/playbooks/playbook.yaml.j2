@@ -50,7 +50,7 @@
            # asterisk means latest version in aptitude world
           {% for pkg in dsc.builds_linux_config_packages %}
           - name: {{ pkg.name }}
-            version: {{ pkg.version }}
+            version: '{{ pkg.version }}'
           {% endfor %}
     when: (ansible_facts['os_family'] | lower == "debian")
 {% endif %}

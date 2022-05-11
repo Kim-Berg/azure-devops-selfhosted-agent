@@ -105,12 +105,12 @@ build {
   ]
 
   post-processor "manifest" {
-      output = "manifest.json"
+      output = "manifest-blue.json"
       strip_path = true
       custom_data = {
           source_image_name = "${build.SourceImageName}"
-          target_vmss_name = "${var.target_scale_set_name}"
-          target_vmss_rg = "${var.target_scale_set_rg}"
+          target_vmss_name = "{{ dsc.scale_set_settings_name }}"
+          target_vmss_rg = "{{ dsc.scale_set_settings_resource_group }}"
       }
   }
 }

@@ -10,7 +10,7 @@ packer {
 variable "ansible_playbook_path" {
   type = string
   description = "Specifies where ansible playbooks are located"
-  default="../../build_config"
+  default="../build_config"
 }
 
 variable "client_id" {
@@ -55,7 +55,7 @@ source "azure-arm" "agent-ubuntu" {
   subscription_id = var.subscription_id
 
 {%- if dsc.builds_use_target_rg_for_build == true %}
-  build_resource_group_name = {{ dsc.builds_target_resource_group }}
+  build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
 {%- else %}
   location = {{ dsc.deployment_location }}
 {%- endif %}
@@ -107,9 +107,9 @@ build {
     use_proxy               = false
     playbook_file           = "${var.ansible_playbook_path}/playbook.yaml"
     inventory_directory     = "${var.ansible_playbook_path}/"
-  {%- raw %}
+  {% raw %}
     inventory_file_template = "{{ .HostAlias }} ansible_host={{ .Host }} ansible_user={{ .User }} ansible_port={{ .Port }} ansible_become=true"
-  {%- endraw %}
+  {% endraw %}
     only                    = ["azure-arm.agent-ubuntu"]
   }
   {%- endif %}
@@ -126,12 +126,12 @@ build {
   }
   {% endif %}
   post-processor "manifest" {
-      output = "manifest.json"
+      output = "manifest-green.json"
       strip_path = true
       custom_data = {
           source_image_name = "${build.SourceImageName}"
-          target_vmss_name = "${var.target_scale_set_name}"
-          target_vmss_rg = "${var.target_scale_set_rg}"
+          target_vmss_name = "{{ dsc.scale_set_settings_name }}"
+          target_vmss_rg = "{{ dsc.scale_set_settings_resource_group }}"
       }
   }
 }
