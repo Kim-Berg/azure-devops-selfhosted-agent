@@ -42,80 +42,64 @@ locals {
     "westus"      = "weus",
     "westus"      = "weus"
   }
-  green_img_linux   = "adolinux-img-${local.location_abbreviations["{{dsc.deployment_location}}"]}-{{dsc.deployment_environment}}-001"
-  green_img_windows = "adowindows-img-${local.location_abbreviations["{{dsc.deployment_location}}"]}-{{dsc.deployment_environment}}-001"
+  green_img_linux   = "adolinux-img-${local.location_abbreviations["westeurope"]}-dev-001"
+  green_img_windows = "adowindows-img-${local.location_abbreviations["westeurope"]}-dev-001"
 }
 
 # source block configures a specific builder plugin, which is then invoked by a build block.
-{% if dsc.builds_linux_enable == true %}
+
 source "azure-arm" "agent-ubuntu" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
-
-{%- if dsc.builds_use_target_rg_for_build == true %}
-  build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
-{%- else %}
-  location = "{{ dsc.deployment_location }}"
-{%- endif %}
-  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
-  managed_image_name                 = local.green_img_linux
+  build_resource_group_name = "ben-packer-weeu-lab-001"
   managed_image_storage_account_type = "Standard_LRS"
+  managed_image_resource_group_name  = "ben-packer-weeu-lab-001"
+  managed_image_name                 = local.green_img_linux
   os_type         = "Linux"
-  image_publisher = "{{ dsc.builds_linux_image_publisher }}"
-  image_offer     = "{{ dsc.builds_linux_image_offer }}"
-  image_sku       = "{{ dsc.builds_linux_image_sku }}"
-  vm_size  = "{{ dsc.builds_linux_vm_size }}"
+  image_publisher = "Canonical"
+  image_offer     = "0001-com-ubuntu-server-focal"
+  image_sku       = "20_04-lts-gen2"
+  vm_size  = "Standard_B1s"
 }
-{%- endif %}
-{% if dsc.builds_windows_enable == true %}
+
 source "azure-arm" "agent-windows" {
   client_id       = var.client_id
   client_secret   = var.client_secret
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
-{%- if dsc.builds_use_target_rg_for_build == true %}
-  build_resource_group_name = "{{ dsc.builds_target_resource_group }}"
-{%- else %}
-  location = "{{ dsc.deployment_location }}"
-{%- endif %}
-  managed_image_resource_group_name  = "{{ dsc.builds_target_resource_group }}"
-  managed_image_name                 = local.green_img_windows
+  build_resource_group_name = "ben-packer-weeu-lab-001"
   managed_image_storage_account_type = "Standard_LRS"
+  managed_image_resource_group_name  = "ben-packer-weeu-lab-001"
+  managed_image_name                 = local.green_img_windows
   os_type         = "Windows"
-  image_publisher = "{{ dsc.builds_windows_image_publisher }}"
-  image_offer     = "{{ dsc.builds_windows_image_offer }}"
-  image_sku       = "{{ dsc.builds_windows_image_sku }}"
-  vm_size  = "{{ dsc.builds_windows_vm_size }}"
+  image_publisher = "MicrosoftWindowsServer"
+  image_offer     = "WindowsServer"
+  image_sku       = "2022-datacenter"
+  vm_size  = "Standard_B1s"
   communicator   = "winrm"
   winrm_insecure = true
   winrm_username = "packer"
   winrm_use_ssl  = true
 }
-{%- endif %}
 
 # The build block defines what Packer should do with the Docker container after it launches.
 build {
   name = "self-hosted-build-agents"
-  sources = [
-    {%- if dsc.builds_linux_enable -%}"source.azure-arm.agent-ubuntu",{%- endif -%}
-    {%- if dsc.builds_windows_enable -%}"source.azure-arm.agent-windows",{%- endif -%}
-  ]
-  {%- if dsc.builds_linux_enable %}
+  sources = ["source.azure-arm.agent-ubuntu","source.azure-arm.agent-windows",]
   provisioner "ansible" {
     use_proxy               = false
     playbook_file           = "${var.ansible_playbook_path}/playbook.yaml"
     inventory_directory     = "${var.ansible_playbook_path}/"
-  {% raw %}
+  
     inventory_file_template = "{{ .HostAlias }} ansible_host={{ .Host }} ansible_user={{ .User }} ansible_port={{ .Port }} ansible_become=true"
-  {% endraw %}
+  
     only                    = ["azure-arm.agent-ubuntu"]
   }
-  {%- endif %}
-  {% if dsc.builds_windows_enable %}
+  
   provisioner "ansible" {
-    playbook_file   = "ansible/playbook.yaml"
+    playbook_file   = "${var.ansible_playbook_path}/playbook.yaml"
     user            = "Administrator"
     use_proxy       = false
     extra_arguments = [
@@ -124,27 +108,20 @@ build {
     ]
     only = ["azure-arm.agent-windows"]
   }
-  {% endif %}
+  
   post-processor "manifest" {
       output = "manifest.json"
       strip_path = true
       custom_data = {
-          source_image_name = "${build.SourceImageName}"
-          target_vmss = [
-{%- for vmss in dsc.target_scale_sets %}
-            {         
-              vmss_name = "{{ vmss.name }}"
-              vmss_resource_group = "{{ vmss.resource_group }}"
-{%- if vmss.os_type == "linux" %}
-              image_name = local.green_img_linux
-              image_resource_group = "{{ dsc.builds_target_resource_group }}"
-{%- elif vmss.os_type == "windows" %}
-              image_name = local.green_img_windows
-              image_resource_group = "{{ dsc.builds_target_resource_group }}"
-{%- endif %}
-            },
-{%- endfor %}
-          ]
+          source_image_name = "${build.SourceImageName}"      
+          vmss_1_name = "vmss-linux-weeu-lab-001"
+          vmss_1_resource_group = "ben-packer-weeu-lab-001"
+          image_1_name = local.green_img_linux
+          image_1_resource_group = "ben-packer-weeu-lab-001"      
+          vmss_2_name = "vmss-windows-weeu-lab-001"
+          vmss_2_resource_group = "ben-packer-weeu-lab-001"
+          image_2_name = local.green_img_linux
+          image_2_resource_group = "ben-packer-weeu-lab-001"
       }
   }
 }

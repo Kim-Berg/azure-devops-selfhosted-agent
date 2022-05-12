@@ -37,8 +37,8 @@ stages:
           scriptSource: 'filePath'
           scriptPath: '$(Build.Repository.LocalPath)/templater.py'
 
-      - task: CmdLine@
-        displayName: 'Debug: print contents of all folders after templating'
+      - task: CmdLine@2
+        displayName: 'print contents of all folders after templating'
         inputs:
           script: |
             ls -la $(Build.Repository.LocalPath)
@@ -46,6 +46,14 @@ stages:
             ls -la $(Build.Repository.LocalPath)/build_config
             echo "---"
             ls -la $(Build.Repository.LocalPath)/builds
+
+      - task: AzureCLI@2
+        displayName: 'Preprocessor - register image definitions to gallery'
+        inputs:
+          azureSubscription: '$(service_connection)'
+          scriptType: 'bash'
+          scriptLocation: 'scriptPath'
+          scriptPath: '$(Build.Repository.LocalPath)/scripts/pre-processor-img.sh'
 
       - task: riezebosch.Packer.PackerTool.PackerTool@0
         displayName: 'Use Packer Latest'

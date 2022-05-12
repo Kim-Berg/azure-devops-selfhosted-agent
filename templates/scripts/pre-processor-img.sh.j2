@@ -1,0 +1,28 @@
+#!/bin/bash
+
+{% if dsc.builds_gallery_enabled == true %}
+echo "Registering new image definitions to gallery"
+    {% if dsc.builds_linux_enable == true %}
+az sig image-definition create \
+    --resource-group {{ dsc.builds_gallery_resource_group }} \
+    --gallery-name {{ dsc.builds_gallery_name }} \
+    --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
+    --publisher {{ dsc.builds_gallery_publisher }} \
+    --offer {{ dsc.builds_linux_image_offer }} \
+    --sku {{ dsc.builds_linux_image_sku }} \
+    --os-type linux
+    {% endif %}
+    {% if dsc.builds_windows_enable == true %}
+az sig image-definition create \
+    --resource-group {{ dsc.builds_gallery_resource_group }} \
+    --gallery-name {{ dsc.builds_gallery_name }} \
+    --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
+    --publisher {{ dsc.builds_gallery_publisher }} \
+    --offer {{ dsc.builds_windows_image_offer }} \
+    --sku {{ dsc.builds_windows_image_sku }} \
+    --os-type windows
+    {% endif %}
+{% else %}
+echo "image gallery is disabled"
+{% endif %}
+exit 0;

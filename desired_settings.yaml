@@ -1,32 +1,39 @@
 ---
 deployment:
-  name: esml-build-script-debug
+  name: devopsagent
   environment: dev
   location: "westeurope"
   agent_type: "AzureDevOps"
+  replication: "Standard_LRS"
 
 target_scale_sets:
   # collect all existing virtual machine scale sets that you want to upgrade with 
   # a new image here.
-  - name: "vmss-packer-weeu-lab-001"
+  - name: "vmss-linux-weeu-lab-001"
     resource_group: ben-packer-weeu-lab-001
     os_type: linux
-  - name: "vmss-packer-weeu-lab-001"
+  - name: "vmss-windows-weeu-lab-001"
     resource_group: ben-packer-weeu-lab-001
     os_type: windows
 
 builds:
   # where to save images
   target_resource_group: "ben-packer-weeu-lab-001"
+  gallery:
+    enabled: true
+    name: img_gal_weeu_lab_001
+    resource_group: ben-packer-weeu-lab-001
+    publisher: benkooijman
   # toggle weither to use location or target resource group
   # for build. This choice depends on RBAC scope of the service principal that is used.
   use_target_rg_for_build: true
   linux:
-    version: '0.1'
+    version: '0.0.1'
     image_publisher: Canonical
     image_offer: 0001-com-ubuntu-server-focal
     image_sku: 20_04-lts-gen2
     vm_size: Standard_B1s
+    image_definition: adolinux
     enable: true
     config:
       compile_from_source:
@@ -66,10 +73,11 @@ builds:
 
   windows:
     enable: true
-    version: '0.1'
+    version: '0.0.1'
     image_publisher: MicrosoftWindowsServer
     image_offer: WindowsServer
     image_sku: 2022-datacenter
+    image_definition: adowindows
     vm_size: Standard_B1s
     config:
       image_offer: 2022-datacenter
