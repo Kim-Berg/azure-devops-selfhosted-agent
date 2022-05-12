@@ -91,15 +91,6 @@ stages:
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
           force: true
 
-      - task: AzureCLI@2
-        displayName: SwapToGreenImage
-        inputs:
-          azureSubscription: '$(service_connection)'
-          scriptType: 'bash'
-          scriptLocation: 'scriptPath'
-          scriptPath: '$(Build.Repository.LocalPath)/scripts/001-image-swap-vmss.sh'
-          arguments: '-u -i $(Build.Repository.LocalPath)/manifest.json'
-
       - task: ArchiveFiles@2
         inputs:
           rootFolderOrFile: '$(Build.Repository.LocalPath)/manifest.json'

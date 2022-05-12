@@ -64,7 +64,7 @@ source "azure-arm" "agent-ubuntu" {
     subscription = var.subscription_id
     resource_group = "{{ dsc.builds_gallery_resource_group }}"
     gallery_name = "{{ dsc.builds_gallery_name }}"
-    image_name = local.green_img_linux
+    image_name = "{{ dsc.builds_linux_image_definition }}"
     image_version = "{{ dsc.builds_linux_version }}"
     replication_regions = ["West Europe"]
     storage_account_type = "{{ dsc.deployment_replication }}"
@@ -97,7 +97,7 @@ source "azure-arm" "agent-windows" {
     subscription = var.subscription_id
     resource_group = "{{ dsc.builds_gallery_resource_group }}"
     gallery_name = "{{ dsc.builds_gallery_name }}"
-    image_name = local.green_img_windows
+    image_name = "{{ dsc.builds_windows_image_definition }}"
     image_version = "{{ dsc.builds_windows_version }}"
     replication_regions = ["West Europe"]
     storage_account_type = "{{ dsc.deployment_replication }}"

@@ -34,6 +34,7 @@ builds:
     image_sku: 20_04-lts-gen2
     vm_size: Standard_B1s
     image_definition: adolinux
+    image_hyperv_generation: 2
     enable: true
     config:
       compile_from_source:
@@ -78,6 +79,7 @@ builds:
     image_offer: WindowsServer
     image_sku: 2022-datacenter
     image_definition: adowindows
+    image_hyperv_generation: 2
     vm_size: Standard_B1s
     config:
       image_offer: 2022-datacenter
