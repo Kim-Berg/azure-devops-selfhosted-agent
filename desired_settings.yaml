@@ -8,14 +8,12 @@ deployment:
 target_scale_sets:
   # collect all existing virtual machine scale sets that you want to upgrade with 
   # a new image here.
-  - name: linux-scaleset01
-    settings:
-      resource_group: ben-packer-weeu-lab-001
-      name: "vmss-packer-weeu-lab-001"
-  - name: windows-scaleset01
-    settings:
-      resource_group: ben-packer-weeu-lab-001
-      name: "vmss-packer-weeu-lab-001"
+  - name: "vmss-packer-weeu-lab-001"
+    resource_group: ben-packer-weeu-lab-001
+    os_type: linux
+  - name: "vmss-packer-weeu-lab-001"
+    resource_group: ben-packer-weeu-lab-001
+    os_type: windows
 
 builds:
   # where to save images

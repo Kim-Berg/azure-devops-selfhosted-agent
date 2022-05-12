@@ -37,45 +37,15 @@ stages:
           scriptSource: 'filePath'
           scriptPath: '$(Build.Repository.LocalPath)/templater.py'
 
-      - task: riezebosch.Packer.PackerTool.PackerTool@0
-        displayName: 'Use Packer Latest'
-
-      - task: riezebosch.Packer.Packer.Packer@1
-        displayName: 'Packer version'
+      - task: CmdLine@
+        displayName: 'Debug: print contents of all folders after templating'
         inputs:
-          azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
-          command: version
-
-      - task: riezebosch.Packer.Packer.Packer@1
-        displayName: 'Packer init'
-        inputs:
-          azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
-          command: init
-
-      - task: riezebosch.Packer.Packer.Packer@1
-        displayName: 'Packer validate'
-        inputs:
-          azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
-          command: validate
-
-      - task: riezebosch.Packer.Packer.Packer@1
-        displayName: 'Packer build'
-        inputs:
-          azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/blue-image.pkr.hcl'
-          force: true
-
-      - task: AzureCLI@2
-        displayName: SwapToBlueImage
-        inputs:
-          azureSubscription: '$(service_connection)'
-          scriptType: 'bash'
-          scriptLocation: 'scriptPath'
-          scriptPath: '$(Build.Repository.LocalPath)/scripts/001-image-swap-vmss.sh'
-          arguments: '-u -i $(Build.Repository.LocalPath)/manifest-blue.json'
+          script: |
+            ls -la $(Build.Repository.LocalPath)
+            echo "---"
+            ls -la $(Build.Repository.LocalPath)/build_config
+            echo "---"
+            ls -la $(Build.Repository.LocalPath)/builds
 
       - task: riezebosch.Packer.PackerTool.PackerTool@0
         displayName: 'Use Packer Latest'
@@ -121,7 +91,7 @@ stages:
 
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(Build.Repository.LocalPath)'
+          rootFolderOrFile: '$(Build.Repository.LocalPath)/manifest.json'
           includeRootFolder: true
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
