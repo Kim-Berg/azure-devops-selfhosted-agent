@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Registering new image definitions to gallery"
 existing_linux_definition=$(az sig image-definition list --gallery-name img_gal_weeu_lab_001 --resource-group ben-packer-weeu-lab-001 --query '[?contains(name, `adolinux`)].{name:name}' | jq '.[]|select(.name|length>0)')
-if [[ -n ${existing_linux_definition} ]];then
+if [[ -z ${existing_linux_definition} ]];then
     az sig image-definition create \
         --resource-group ben-packer-weeu-lab-001 \
         --gallery-name img_gal_weeu_lab_001 \
@@ -11,5 +11,7 @@ if [[ -n ${existing_linux_definition} ]];then
         --sku 20_04-lts-gen2 \
         --hyper-v-generation "V2" \
         --os-type linux
+else
+    echo "image definition already exists. Doing nothing :)"
 fi
 exit 0;

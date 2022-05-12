@@ -14,6 +14,8 @@ if [[ -z ${existing_linux_definition} ]];then
         --sku {{ dsc.builds_linux_image_sku }} \
         --hyper-v-generation "V{{ dsc.builds_linux_image_hyperv_generation }}" \
         --os-type linux
+else
+    echo "image definition already exists. Doing nothing :)"
 fi
     {%- endif %}
     {%- if dsc.builds_windows_enable == true %}
@@ -28,6 +30,8 @@ if [[ -z ${existing_windows_definition} ]];then
         --sku {{ dsc.builds_windows_image_sku }} \
         --hyper-v-generation "V{{ dsc.builds_windows_image_hyperv_generation }}" \
         --os-type windows
+else
+    echo "image definition already exists. Doing nothing :)"
 fi
     {%- endif %}
 {%- else %}
