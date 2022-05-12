@@ -33,6 +33,7 @@ stages:
         displayName: 'Upgrade pip and install requirements.txt'
 
       - task: PythonScript@0
+        displayName: 'Render all templates'
         inputs:
           scriptSource: 'filePath'
           scriptPath: '$(Build.Repository.LocalPath)/templater.py'
@@ -46,9 +47,11 @@ stages:
             ls -la $(Build.Repository.LocalPath)/build_config
             echo "---"
             ls -la $(Build.Repository.LocalPath)/builds
+            echo "---"
+            ls -la $(Build.Repository.LocalPath)/scripts
 
       - task: AzureCLI@2
-        displayName: 'Preprocessor - register image definitions to gallery'
+        displayName: 'Register image definitions to gallery'
         inputs:
           azureSubscription: '$(service_connection)'
           scriptType: 'bash'
@@ -62,21 +65,21 @@ stages:
         displayName: 'Packer version'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: version
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer init'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: init
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer validate'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: validate
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
 
@@ -84,7 +87,7 @@ stages:
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/builds/green-image.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
           force: true
 
@@ -95,7 +98,7 @@ stages:
           scriptType: 'bash'
           scriptLocation: 'scriptPath'
           scriptPath: '$(Build.Repository.LocalPath)/scripts/001-image-swap-vmss.sh'
-          arguments: '-u -i $(Build.Repository.LocalPath)/manifest-green.json'
+          arguments: '-u -i $(Build.Repository.LocalPath)/manifest.json'
 
       - task: ArchiveFiles@2
         inputs:

@@ -72,7 +72,7 @@ builds:
           version: '*'
 
   windows:
-    enable: true
+    enable: false
     version: '0.0.1'
     image_publisher: MicrosoftWindowsServer
     image_offer: WindowsServer

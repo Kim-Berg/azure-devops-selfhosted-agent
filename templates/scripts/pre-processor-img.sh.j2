@@ -1,28 +1,34 @@
 #!/bin/bash
 
-{% if dsc.builds_gallery_enabled == true %}
+{%- if dsc.builds_gallery_enabled == true %}
 echo "Registering new image definitions to gallery"
-    {% if dsc.builds_linux_enable == true %}
-az sig image-definition create \
-    --resource-group {{ dsc.builds_gallery_resource_group }} \
-    --gallery-name {{ dsc.builds_gallery_name }} \
-    --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
-    --publisher {{ dsc.builds_gallery_publisher }} \
-    --offer {{ dsc.builds_linux_image_offer }} \
-    --sku {{ dsc.builds_linux_image_sku }} \
-    --os-type linux
-    {% endif %}
-    {% if dsc.builds_windows_enable == true %}
-az sig image-definition create \
-    --resource-group {{ dsc.builds_gallery_resource_group }} \
-    --gallery-name {{ dsc.builds_gallery_name }} \
-    --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
-    --publisher {{ dsc.builds_gallery_publisher }} \
-    --offer {{ dsc.builds_windows_image_offer }} \
-    --sku {{ dsc.builds_windows_image_sku }} \
-    --os-type windows
-    {% endif %}
-{% else %}
+    {%- if dsc.builds_linux_enable == true %}
+existing_linux_definition=$(az sig image-definition list --gallery-name {{ dsc.builds_gallery_name }} --resource-group {{ dsc.builds_gallery_resource_group }} --query '[?contains(name, `{{ dsc.builds_linux_image_definition }}`)].{name:name}' | jq '.[]|select(.name|length>0)')
+if [[ -n ${existing_linux_definition} ]];then
+    az sig image-definition create \
+        --resource-group {{ dsc.builds_gallery_resource_group }} \
+        --gallery-name {{ dsc.builds_gallery_name }} \
+        --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
+        --publisher {{ dsc.builds_gallery_publisher }} \
+        --offer {{ dsc.builds_linux_image_offer }} \
+        --sku {{ dsc.builds_linux_image_sku }} \
+        --os-type linux
+fi
+    {%- endif %}
+    {%- if dsc.builds_windows_enable == true %}
+existing_windows_definition=$(az sig image-definition list --gallery-name {{ dsc.builds_gallery_name }} --resource-group {{ dsc.builds_gallery_resource_group }} --query '[?contains(name, `{{ dsc.builds_windows_image_definition }}`)].{name:name}' | jq '.[]|select(.name|length>0)')
+if [[ -n ${existing_windows_definition} ]];then
+    az sig image-definition create \
+        --resource-group {{ dsc.builds_gallery_resource_group }} \
+        --gallery-name {{ dsc.builds_gallery_name }} \
+        --gallery-image-definition {{ dsc.builds_linux_image_definition }} \
+        --publisher {{ dsc.builds_gallery_publisher }} \
+        --offer {{ dsc.builds_windows_image_offer }} \
+        --sku {{ dsc.builds_windows_image_sku }} \
+        --os-type windows
+fi
+    {%- endif %}
+{%- else %}
 echo "image gallery is disabled"
-{% endif %}
+{%- endif %}
 exit 0;
