@@ -17,3 +17,5 @@ manifest.json
 local_debug*
 
 *.json
+
+parameters.auto.pkrvars.hcl

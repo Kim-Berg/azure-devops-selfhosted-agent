@@ -25,7 +25,7 @@ builds:
   # for build. This choice depends on RBAC scope of the service principal that is used.
   use_target_rg_for_build: true
   linux:
-    version: '0.0.1'
+    version: '0.0.2'
     image_publisher: Canonical
     image_offer: 0001-com-ubuntu-server-focal-daily
     image_sku: 20_04-daily-lts-gen2
@@ -39,18 +39,23 @@ builds:
           url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
         - name: packages-microsoft-prod
           url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
-      install_scripts: []
-        # - name: docker-compose
-        #   url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
-        #   dst_folder: /usr/local/bin/docker-compose
+      install_scripts: 
+        - name: miniconda
+          url: https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
+          checksum: 4ee9c3aa53329cd7a63b49877c0babb49b19b7e5af29807b793a76bdb1d362b4
+          installation_args: []
+      download_binaries: []
+        # - name: 
+        #   url: 
+        #   dst_folder: 
       gpg_packages:
         - name: azure-cli
           url: https://packages.microsoft.com/keys/microsoft.asc
           keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
       repositories: []
-        # - name: azure-cli
-        #   content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ focal main"
-        #   filename: azure-cli.list
+        # - name: 
+        #   content: 
+        #   filename: 
       packages:
         - name: azure-cli
           version: '*'

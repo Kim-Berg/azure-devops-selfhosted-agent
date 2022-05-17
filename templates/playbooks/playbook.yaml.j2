@@ -27,6 +27,16 @@
         {%- for pkg in dsc.builds_linux_config_install_scripts %}
         - name: {{ pkg.name }}
           url: {{ pkg.url }}
+          installation_args: {{ pkg.installation_args }}
+          checksum: {{ pkg.checksum }}
+        {%- endfor %}
+      {%- endif %}
+      {%- if dsc.builds_linux_config_download_binaries != [] %}
+      # these are scripts that are directly installed after retrieving them
+      install_scripts:
+        {%- for pkg in dsc.builds_linux_config_download_binaries %}
+        - name: {{ pkg.name }}
+          url: {{ pkg.url }}
           dst_folder: {{ pkg.dst_folder }}
         {%- endfor %}
       {%- endif %}

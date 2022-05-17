@@ -1,12 +1,12 @@
 ---
 # tasks file for linux-agent
-- name: Update base system packages
-  apt:
-    name: "{{ item }}"
-    state: latest
-    force_apt_get: true
-    update_cache: true
-  loop: "{{ system_packages }}"
+# - name: Update base system packages
+#   apt:
+#     name: "{{ item }}"
+#     state: latest
+#     force_apt_get: true
+#     update_cache: true
+#   loop: "{{ system_packages }}"
 
 - name: Add repositories
   ansible.builtin.apt_repository:
@@ -18,10 +18,52 @@
 - name: download scripts and place them in path
   get_url:
     url: "{{ item.url }}"
-    dest: "{{ item.dst_folder }}"
+    dest: /tmp
     mode: '0555'
     force: yes
   loop: "{{ install_scripts }}"
+
+- name: Get sha256 sum of script
+  stat:
+    path: /tmp/{{ item.url.split('/') | last }}
+    checksum_algorithm: sha256
+    get_checksum: yes
+  register: shasum_stat
+  loop: "{{ install_scripts }}"
+
+- name: Verify sha256sum of script before execution.
+  fail:
+    msg: "Failure, file /tmp/{{ item.url.split('/') | last }} is not correct."
+  when: item[1].stat.checksum != "{{ item[0].checksum }}"
+  with_together: 
+  - "{{ install_scripts }}"
+  - "{{ shasum_stat.results }}"
+
+- name: install scripts
+  ansible.builtin.command:
+    argv:
+      - bash
+      - /tmp/{{ item.url.split('/') | last }}
+      - "{{ item.installation_arg }}"
+  args:
+    chdir: /tmp
+  loop: "{{ install_scripts }}"
+
+- name: install scripts that have been downloaded
+  get_url:
+    url: "{{ item.url }}"
+    dest: /tmp
+    mode: '0555'
+    force: yes
+  loop: "{{ install_scripts }}"
+
+- name: download binaries and place them in path
+  get_url:
+    url: "{{ item.url }}"
+    dest: "{{ item.dst_folder }}"
+    mode: '0555'
+    force: yes
+  loop: "{{ download_binaries }}"
 
 - name: download packages that are compiled from source
   get_url:
@@ -29,6 +71,7 @@
     dest: /tmp/
     mode: '0440'
   loop: "{{ install_from_source }}"
+
   # --- find deb packages
 - find:
     paths: /tmp
@@ -42,11 +85,12 @@
 - debug:
     msg: "Deb file found: {{ item.path }}"
   loop: "{{ deb_packages.files }}"
-  # ---
+  
 - find:
     paths: /tmp
     patterns: "*.tgz"
   register: tarballs
+
 # --- find deb packages
 - debug:
     msg: "No tgz files found in /tmp"
@@ -55,6 +99,7 @@
 - debug:
     msg: "tgz file found: {{ item.path }}"
   loop: "{{ tarballs.files }}"
+
 # --- perform actions on deb files
 - name: dpkg install packages
   ansible.builtin.command:
@@ -67,6 +112,7 @@
   loop: "{{ deb_packages.files }}"
   loop_control:
     index_var: index
+
 # --- perform actions on different downloaded files
 - name: create unpacking destination folders
   file:

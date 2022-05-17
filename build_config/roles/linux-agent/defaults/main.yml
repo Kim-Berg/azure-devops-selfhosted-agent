@@ -19,6 +19,7 @@ system_packages:
   - libbz2-dev
 
 install_scripts: []
+download_binaries: []
 install_gpg: []
 install_repositories: []
 install_apt_packages: []
