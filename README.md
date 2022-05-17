@@ -21,6 +21,24 @@ Developed with the following tool versions
 * Packer version 1.8.0
 * Python version 3.10.0
 
+
+# Create VMSS
+```
+az vmss create \
+--name <name> \
+--resource-group <rg> \
+--image Canonical:0001-com-ubuntu-server-focal-daily:20_04-daily-lts-gen2:20.04.202205110 \
+--vm-sku Standard_B1ls \
+--storage-sku StandardSSD_LRS \
+--authentication-type SSH \
+--instance-count 2 \
+--disable-overprovision \
+--upgrade-policy-mode manual \
+--single-placement-group false \
+--platform-fault-domain-count 1 \
+--load-balancer ""
+```
+
 # How does it work?
 
 1. Everything from the desired_state.yaml file
