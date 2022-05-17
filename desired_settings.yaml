@@ -9,67 +9,52 @@ deployment:
 target_scale_sets:
   # collect all existing virtual machine scale sets that you want to upgrade with 
   # a new image here.
-  - name: "vmss-linux-weeu-lab-001"
-    resource_group: ben-packer-weeu-lab-001
+  - name: "vmss-mlmcn-weeu-prod-001"
+    resource_group: ml-enterprise-prod-rg
     os_type: linux
-  - name: "vmss-windows-weeu-lab-001"
-    resource_group: ben-packer-weeu-lab-001
-    os_type: windows
 
 builds:
   # where to save images
-  target_resource_group: "ben-packer-weeu-lab-001"
+  target_resource_group: "ml-enterprise-prod-rg"
   gallery:
     enabled: true
-    name: img_gal_weeu_lab_001
-    resource_group: ben-packer-weeu-lab-001
-    publisher: benkooijman
+    name: gal_mlcmn_weeu_lab_001
+    resource_group: ml-enterprise-prod-rg
+    publisher: esml
   # toggle weither to use location or target resource group
   # for build. This choice depends on RBAC scope of the service principal that is used.
   use_target_rg_for_build: true
   linux:
     version: '0.0.1'
     image_publisher: Canonical
-    image_offer: 0001-com-ubuntu-server-focal
-    image_sku: 20_04-lts-gen2
+    image_offer: 0001-com-ubuntu-server-focal-daily
+    image_sku: 20_04-daily-lts-gen2
     vm_size: Standard_B1s
-    image_definition: adolinux
+    image_definition: esml-devops-agent-linux
     image_hyperv_generation: 2
     enable: true
     config:
       compile_from_source:
         - name: python36
           url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
-      install_scripts:
-        - name: docker-compose
-          url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
-          dst_folder: /usr/local/bin/docker-compose
+        - name: packages-microsoft-prod
+          url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+      install_scripts: []
+        # - name: docker-compose
+        #   url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
+        #   dst_folder: /usr/local/bin/docker-compose
       gpg_packages:
-        - name: docker
-          url: https://download.docker.com/linux/ubuntu/gpg
-          keyring: /usr/share/keyrings/docker-archive-keyring.gpg
         - name: azure-cli
           url: https://packages.microsoft.com/keys/microsoft.asc
           keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
-      repositories:
-        - name: docker
-          content: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable"
-          filename: docker.list
-        - name: azure-cli
-          content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
-          filename: azure-cli.list
+      repositories: []
+        # - name: azure-cli
+        #   content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ focal main"
+        #   filename: azure-cli.list
       packages:
-        - name: git
-          version: '*'
-        - name: make
-          version: '*'
         - name: azure-cli
           version: '*'
-        - name: docker-ce
-          version: '*'
-        - name: docker-ce-cli
-          version: '*'
-        - name: containerd.io
+        - name: powershell
           version: '*'
 
   windows:

@@ -1,9 +1,11 @@
 ---
 # defaults file for linux-agent
-system_packages:           
-  - ca-certificates
+system_packages:
+  - python3-apt       
   - curl 
   - apt-transport-https
+  - software-properties-common
+  - ca-certificates
   - lsb-release
   - build-essential
   - checkinstall
@@ -15,3 +17,9 @@ system_packages:
   - libgdbm-dev 
   - libc6-dev 
   - libbz2-dev
+
+install_scripts: []
+install_gpg: []
+install_repositories: []
+install_apt_packages: []
+install_from_source: []
