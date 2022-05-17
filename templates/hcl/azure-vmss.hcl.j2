@@ -155,8 +155,8 @@ build {
       custom_data = {
           source_image_name = "${build.SourceImageName}"
 {%- if dsc.builds_gallery_enabled == true %}
-          image_gallery_name = {{ dsc.builds_gallery_name }}
-          image_gallery_resource_group = {{ dsc.builds_gallery_resource_group }}
+          image_gallery_name = "{{ dsc.builds_gallery_name }}"
+          image_gallery_resource_group = "{{ dsc.builds_gallery_resource_group }}"
 {% endif %}
 {%- for vmss in dsc.target_scale_sets %}      
           vmss_{{ loop.index }}_name = "{{ vmss.name }}"
