@@ -1,17 +1,12 @@
-# Notice
-
-This is a work in progress project! This means that some documentation is wrong and code do not work as intended yet
-
-# azure-devops-selfhosted-agent
-Managed self-hosted agent creation + OS level dependencies from a single `desired_state.yaml` file
-I created this project because I needed a way control the dependencies on my self-hosted build agents with immutable images.
+# Desired state image building and publishing
+Create a VM image and publish it to a image gallery from a single file
 
 # Features
 
-* Create immutable images for VMSS hosted build agents
-* Automated building of images and re-imaging of exising virtual machine scale sets
+* Bootstrap packer and ansible from a single desired state
+* Automated building of images and publishing
 * Supports Windows and Ubuntu images
-* Input is controlled with DaC (Data as Config)
+* Data as Config driven (DaC)
 
 # Tooling
 
@@ -23,21 +18,9 @@ Developed with the following tool versions
 
 
 # Create VMSS
-```
-az vmss create \
---name <name> \
---resource-group <rg> \
---image Canonical:0001-com-ubuntu-server-focal-daily:20_04-daily-lts-gen2:20.04.202205110 \
---vm-sku Standard_B1ls \
---storage-sku StandardSSD_LRS \
---authentication-type SSH \
---instance-count 2 \
---disable-overprovision \
---upgrade-policy-mode manual \
---single-placement-group false \
---platform-fault-domain-count 1 \
---load-balancer ""
-```
+After an image has been published to the compute gallery you can create an VMSS from it. Make sure that the following settings are used
+* Add VMSS to the correct VNET/subnet
+* Autoscaling settings must be set to "manual" if you want to use VMSS as a self-hosted DevOps agent
 
 # How does it work?
 
@@ -47,14 +30,18 @@ az vmss create \
 
 # How to use
 
-1. Install the CI/\*.yaml file inside your building environment
-2. Update the desired_state.yaml (see reference docs here)
+**Manually**
+1. Update `desired_settings.yaml` 
+2. Run templater.py (this will create 3 files; `scripts/pre-processor-img.sh`, `build_config/playbook.yaml` & `builds/azure-vmss.pkr.hcl`)
+3. Execute `scripts/pre-processor-img.sh` with bash (this will create an image definition in the compute gallery specified in `desired_settings.yaml` )
+4. Run the `builds/azure-vmss.pkr.hcl` file with packer
 
-# Image types
+**From CI**
+1. Create a pipeline from the ci/azure-pipelines.yaml file
+2. Change the `service_connection` variable value to an existing service connection
+3. Update Update `desired_settings.yaml`
+4. e voilà 
 
-The following build agents are supported by this project
-
-* Azure DevOps Self Hosted Agent
 
 # TODO
 

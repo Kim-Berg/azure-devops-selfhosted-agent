@@ -16,7 +16,7 @@ variables:
     # ------ Do change variables below --------
     # See "service connections" under Azure DevOps organization settings
     - name: service_connection
-      value: 'epiroc-esml-prod'
+      value: 'epiroc-esml-dev'
 
 stages:
   - stage: SwapAndReplace

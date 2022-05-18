@@ -13,10 +13,10 @@
       # - a_weird_file.name.with.too.many.dots
       file_regex: >-
         ^([^\.]*).*
-      {%- if dsc.builds_linux_config_compile_from_source != [] %}
+      {%- if dsc.builds_linux_config_install_from_source != [] %}
       # these are packages that need to be compiled from source
       install_from_source:
-        {%- for pkg in dsc.builds_linux_config_compile_from_source %}
+        {%- for pkg in dsc.builds_linux_config_install_from_source %}
         - name: {{ pkg.name }}
           url: {{ pkg.url }}
         {%- endfor %}
@@ -33,7 +33,7 @@
       {%- endif %}
       {%- if dsc.builds_linux_config_download_binaries != [] %}
       # these are scripts that are directly installed after retrieving them
-      install_scripts:
+      download_binaries:
         {%- for pkg in dsc.builds_linux_config_download_binaries %}
         - name: {{ pkg.name }}
           url: {{ pkg.url }}
