@@ -9,80 +9,62 @@ deployment:
 target_scale_sets:
   # collect all existing virtual machine scale sets that you want to upgrade with 
   # a new image here.
-  - name: "devopsagent-vmss-weeu-dev-001"
-    resource_group: integration-interoperabilityplatform-dev-rg
+  - name: "vmss-mlmcn-weeu-dev-001"
+    resource_group: ml-enterprise-dev-rg
     os_type: linux
 
 builds:
   # where to save images
-  target_resource_group: "integration-interoperabilityplatform-dev-rg"
+  target_resource_group: "ml-enterprise-dev-rg"
   gallery:
     enabled: true
-    name: gal_iop_weeu_dev_001
-    resource_group: integration-interoperabilityplatform-dev-rg
-    publisher: iop
+    name: img_mlcmn_weeu_dev_001
+    resource_group: ml-enterprise-dev-rg
+    publisher: esml-infra-team
   # toggle weither to use location or target resource group
   # for build. This choice depends on RBAC scope of the service principal that is used.
   use_target_rg_for_build: true
   linux:
-    version: '0.0.1'
+    version: '1.0.0'
     image_publisher: Canonical
     image_offer: 0001-com-ubuntu-server-focal-daily
     image_sku: 20_04-daily-lts-gen2
     vm_size: Standard_B1s
-    image_definition: iop-devops-agent-linux
+    image_definition: esml-devops-agent-linux
     image_hyperv_generation: 2
     enable: true
-    config:
-      # there files are packages that need to be compiled or installed via dpkg/rpm
-      install_from_source:
-        - name: python36
-          url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
-        - name: packages-microsoft-prod
-          url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
-      # these are packages that are downloaded and executed. If a checksum is supplied then this will be verified
-      install_scripts: []
-        # - name:
-        #   url:
-        #   installation_args: 
-        #   checksum: 
-      # these need to installation, these files are intead placed directly in PATH of target machine
-      download_binaries: 
-        - name: docker-compose
-          url: https://github.com/docker/compose/releases/download/1.29.2/docker-compose-{{ ansible_facts.system }}-{{ ansible_facts.architecture }}
-          dst_folder: /usr/local/bin/docker-compose
-      # keyrings that must be added to the target machine
-      gpg_packages:
-        - name: docker
-          url: https://download.docker.com/linux/ubuntu/gpg
-          keyring: /usr/share/keyrings/docker-archive-keyring.gpg
-        - name: azure-cli
-          url: https://packages.microsoft.com/keys/microsoft.asc
-          keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
-      # repositories that must be added to target machine
-      repositories:
-        - name: docker
-          content: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_facts.distribution_release }} stable"
-          filename: docker.list
-        - name: azure-cli
-          content: "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ {{ ansible_facts.distribution_release }} main"
-          filename: azure-cli.list
-      # packages that must be installed. This task is the last task to be performed by linux-agent role
-      packages:
-        - name: azure-cli
-          version: '*'
-        - name: powershell
-          version: '*'
-        - name: git
-          version: '*'
-        - name: make
-          version: '*'
-        - name: docker-ce
-          version: '*'
-        - name: docker-ce-cli
-          version: '*'
-        - name: containerd.io
-          version: '*'
+    add_ons: [esml]
+    roles:
+      - name: esml
+        vars:
+          git_repo: https://github.com/jostrm/azure-enterprise-scale-ml.git
+      - name: linux-packages
+        vars:
+          install_from_source:
+            - name: python36
+              url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
+            - name: packages-microsoft-prod
+              url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+          install_scripts: 
+            - name: miniconda
+              url: https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
+              checksum: 4ee9c3aa53329cd7a63b49877c0babb49b19b7e5af29807b793a76bdb1d362b4
+              installation_arg: "-b"
+          download_binaries: []
+            # - name: 
+            #   url: 
+            #   dst_folder: 
+          gpg_packages:
+            - name: azure-cli
+              url: https://packages.microsoft.com/keys/microsoft.asc
+              keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
+          repositories: []
+            # - name: 
+            #   content: 
+            #   filename: 
+          packages:
+            - name: azure-cli
+            - name: powershell
 
   windows:
     enable: false
