@@ -33,38 +33,39 @@ builds:
     image_definition: esml-devops-agent-linux
     image_hyperv_generation: 2
     enable: true
-    add_ons: [esml]
     roles:
+      # - name: linux-packages
+      #   vars:
+      #     install_from_source:
+      #       - name: python36
+      #         url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
+      #       - name: packages-microsoft-prod
+      #         url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
+      #     install_scripts: []
+      #     download_binaries: []
+      #       # - name: 
+      #       #   url: 
+      #       #   dst_folder: 
+      #     gpg_packages:
+      #       - name: azure-cli
+      #         url: https://packages.microsoft.com/keys/microsoft.asc
+      #         keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
+      #     repositories: []
+      #       # - name: 
+      #       #   content: 
+      #       #   filename: 
+      #     packages:
+      #       - name: azure-cli
+      #       - name: powershell
       - name: esml
         vars:
           git_repo: https://github.com/jostrm/azure-enterprise-scale-ml.git
-      - name: linux-packages
-        vars:
-          install_from_source:
-            - name: python36
-              url: https://www.python.org/ftp/python/3.6.10/Python-3.6.10.tgz
-            - name: packages-microsoft-prod
-              url: https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb
-          install_scripts: 
-            - name: miniconda
-              url: https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
-              checksum: 4ee9c3aa53329cd7a63b49877c0babb49b19b7e5af29807b793a76bdb1d362b4
-              installation_arg: "-b"
-          download_binaries: []
-            # - name: 
-            #   url: 
-            #   dst_folder: 
-          gpg_packages:
-            - name: azure-cli
-              url: https://packages.microsoft.com/keys/microsoft.asc
-              keyring: /etc/apt/trusted.gpg.d/microsoft.gpg
-          repositories: []
-            # - name: 
-            #   content: 
-            #   filename: 
-          packages:
-            - name: azure-cli
-            - name: powershell
+          conda_user: azureuser
+          anaconda_packages:
+            - name: anaconda
+              url: https://repo.anaconda.com/archive/Anaconda3-2022.05-Linux-x86_64.sh
+              checksum: a7c0afe862f6ea19a596801fc138bde0463abcbce1b753e8d5c474b506a2db2d
+              installation_prefix: /home/azureuser/anaconda3
 
   windows:
     enable: false

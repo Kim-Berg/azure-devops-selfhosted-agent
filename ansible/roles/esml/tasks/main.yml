@@ -1,0 +1,60 @@
+---
+# tasks file for esml
+- name: clone the esml repository
+  ansible.builtin.git:
+    repo: "{{ git_repo }}"
+    dest: "{{ git_clone_to_folder }}"
+    clone: yes
+    update: yes
+    recursive: yes
+
+- name: download anaconda
+  get_url:
+    url: "{{ item.url }}"
+    dest: /tmp
+    mode: '0555'
+    force: yes
+  loop: "{{ anaconda_packages }}"
+
+- name: Get sha256 sum of script
+  stat:
+    path: /tmp/{{ item.url.split('/') | last }}
+    checksum_algorithm: sha256
+    get_checksum: yes
+  register: shasum_stat
+  loop: "{{ anaconda_packages }}"
+
+- name: Verify sha256sum of script before execution.
+  fail:
+    msg: "Failure, file /tmp/{{ item.url.split('/') | last }} is not correct."
+  when: item[1].stat.checksum != "{{ item[0].checksum }}"
+  with_together: 
+  - "{{ anaconda_packages }}"
+  - "{{ shasum_stat.results }}"
+
+- name: install anaconda
+  ansible.builtin.command: "bash /tmp/{{ item.url.split('/') | last }} -b -u -p {{ item.installation_prefix }}"
+  args:
+    chdir: /tmp
+  loop: "{{ anaconda_packages }}"
+  
+- name: activate anaconda
+  shell: ". {{ item.installation_prefix }}/bin/activate && conda init" 
+  args:
+    executable: /bin/bash
+  become_user: "{{ conda_user }}"
+  loop: "{{ anaconda_packages }}"
+
+- name: source .bashrc
+  shell: ". /home/{{ conda_user }}/.bashrc" 
+  args:
+    executable: /bin/bash
+  become_user: "{{ conda_user }}"
+
+- name: unattended_linux_install_for_mlops
+  shell: ". {{ item.installation_prefix }}/bin/activate && bash automl_setup_linux.sh" 
+  args:
+    executable: /bin/bash
+    chdir: "{{ git_clone_to_folder }}/environment_setup/unattended_linux_install_for_mlops"
+  become_user: "{{ conda_user }}"
+  loop: "{{ anaconda_packages }}"

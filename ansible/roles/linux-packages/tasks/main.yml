@@ -33,22 +33,11 @@
   - "{{ shasum_stat.results }}"
 
 - name: install scripts
-  ansible.builtin.command:
-    argv:
-      - bash
-      - /tmp/{{ item.url.split('/') | last }}
-      - "{{ item.installation_arg }}"
+  ansible.builtin.command: "bash /tmp/{{ item.url.split('/') | last }} {{ item.installation_arg }}"
   args:
     chdir: /tmp
   loop: "{{ install_scripts }}"
 
-- name: install scripts that have been downloaded
-  get_url:
-    url: "{{ item.url }}"
-    dest: /tmp
-    mode: '0555'
-    force: yes
-  loop: "{{ install_scripts }}"
 
 - name: download binaries and place them in path
   get_url:
