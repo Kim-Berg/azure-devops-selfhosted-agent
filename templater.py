@@ -1,6 +1,7 @@
 import os
 from yaml import load
 from collections.abc import MutableMapping
+from pprint import pprint
 
 from jinja2 import Environment, FileSystemLoader
 
@@ -71,9 +72,10 @@ DESIRED_STATE_PATH=os.path.abspath('desired_settings.yaml')
 
 with open(DESIRED_STATE_PATH, 'r') as stream:
     dsc = flatten(load(stream.read(), Loader=Loader))
+    pprint(dsc)
 
-    cac_path=os.path.abspath(os.path.join('.', 'build_config'))
-    iac_path=os.path.abspath(os.path.join('.', 'builds'))
+    cac_path=os.path.abspath(os.path.join('.', 'ansible'))
+    iac_path=os.path.abspath(os.path.join('.', 'packer'))
     scripts_path=os.path.abspath(os.path.join('.', 'scripts'))
 
     build = TemplateWrapper(

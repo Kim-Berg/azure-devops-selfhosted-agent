@@ -1,0 +1,4 @@
+---
+# defaults file for esml
+git_repo: https://github.com/jostrm/azure-enterprise-scale-ml.git
+git_clone_to_folder: /tmp/esml

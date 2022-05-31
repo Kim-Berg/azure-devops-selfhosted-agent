@@ -3,73 +3,19 @@
   hosts: all
   tasks:
   {%- if dsc.builds_linux_enable == true %}
+    {%- for r in dsc.builds_linux_roles %}
   - include_role:
-      name: linux-agent
-    vars:
-      # this regex is used to strip single and multi dimention file extentions from filenames
-      # - file1.tar
-      # - file2.tar.gz
-      # - file3.tar.bz2.back
-      # - a_weird_file.name.with.too.many.dots
-      file_regex: >-
-        ^([^\.]*).*
-      {%- if dsc.builds_linux_config_install_from_source != [] %}
-      # these are packages that need to be compiled from source
-      install_from_source:
-        {%- for pkg in dsc.builds_linux_config_install_from_source %}
-        - name: {{ pkg.name }}
-          url: {{ pkg.url }}
-        {%- endfor %}
-      {%- endif %}
-      {%- if dsc.builds_linux_config_install_scripts != [] %}
-      # these are scripts that are directly installed after retrieving them
-      install_scripts:
-        {%- for pkg in dsc.builds_linux_config_install_scripts %}
-        - name: {{ pkg.name }}
-          url: {{ pkg.url }}
-          installation_args: {{ pkg.installation_args }}
-          checksum: {{ pkg.checksum }}
-        {%- endfor %}
-      {%- endif %}
-      {%- if dsc.builds_linux_config_download_binaries != [] %}
-      # these are scripts that are directly installed after retrieving them
-      download_binaries:
-        {%- for pkg in dsc.builds_linux_config_download_binaries %}
-        - name: {{ pkg.name }}
-          url: {{ pkg.url }}
-          dst_folder: {{ pkg.dst_folder }}
-        {%- endfor %}
-      {%- endif %}
-      {%- if dsc.builds_linux_config_gpg_packages != [] %}
-      # these are gpg keys that must be installed before installing from repositories
-      install_gpg:
-        {% for pkg in dsc.builds_linux_config_gpg_packages %}
-        - name: {{ pkg.name }}
-          url: {{ pkg.url }}
-          keyring: {{ pkg.keyring }}
-        {%- endfor %}
-      {%- endif %}
-      {%- if dsc.builds_linux_config_repositories != [] %}
-      # these are repositories necessary to add before installing packages
-      install_repositories:
-        # repositories that should be installed on host
-        # "dest" keys denote where the repository renty is stored on filesystem
-        {%- for pkg in dsc.builds_linux_config_repositories %}
-        - name: {{ pkg.name }}
-          content: {{ pkg.content }}
-          filename: {{ pkg.filename }}
-        {%- endfor %}
-      {%- endif %}
-      {%- if dsc.builds_linux_config_packages != [] %}
-      # these are packages necessary to install
-      install_apt_packages:
-           # asterisk means latest version in aptitude world
-          {%- for pkg in dsc.builds_linux_config_packages %}
-          - name: {{ pkg.name }}
-            version: '{{ pkg.version }}'
-          {%- endfor %}
-      {%- endif %}
+      name: {{ r.name }}
+    {%- if r.vars != {} %}
+    vars: 
+      {%- for var_name, var_value in r.vars.items() %}
+        {%- if var_value != none %}
+        {{ var_name }}: {{ var_value }}
+        {%- endif %}
+      {%- endfor %}
+    {%- endif %}
     when: (ansible_facts['os_family'] | lower == "debian")
+    {%- endfor %}
 {%- endif %}
 {%- if dsc.builds_windows_enable == true %}
   - include_role:
