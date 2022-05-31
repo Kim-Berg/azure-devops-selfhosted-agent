@@ -161,4 +161,4 @@
     state: present
     force_apt_get: true
     update_cache: true
-  loop: "{{ install_apt_packages }}"
+  loop: "{{ packages }}"

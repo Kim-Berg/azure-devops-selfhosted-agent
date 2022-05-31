@@ -1,6 +1,17 @@
 # Desired state image building and publishing
 Create a VM image and publish it to a image gallery from a single file
 
+```
+ _______________________________
+< Desired state managed images! >
+ -------------------------------
+        \   ^__^
+         \  (oo)\_______
+            (__)\       )\/\
+                ||----w |
+                ||     ||
+```
+
 # Features
 
 * Bootstrap packer and ansible from a single desired state

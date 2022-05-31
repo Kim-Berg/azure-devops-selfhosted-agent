@@ -1,0 +1,49 @@
+---
+# tasks file for ado-virtual-machine-scaleset
+- name: Add managed ADO pipeline user account
+  ansible.builtin.user:
+    name: AzDevOps
+    shell: /bin/bash
+    comment: Used by CI/CD pipelines
+    uid: 1002
+    group: admin
+    append: yes
+
+- name: download deb packages
+  get_url:
+    url: "{{ item.url }}"
+    dest: /tmp/
+    mode: '0440'
+  loop: "{{ deb_files }}"
+
+- name: dpkg install packages
+  ansible.builtin.command:
+    argv:
+      - dpkg
+      - -i 
+      - "{{ item.url.split('/') | last }}"
+  args:
+    chdir: "/tmp"
+  loop: "{{ deb_files }}"
+
+- name: Install gpg keys
+  ansible.builtin.apt_key:
+    url: "{{ item.url }}"
+    state: present
+    keyring: "{{ item.keyring }}"
+  loop: "{{ gpg_keys }}"
+
+- name: Add repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item.content }}"
+    filename: "{{ item.filename }}"
+    state: present
+  loop: "{{ repositories }}"
+
+- name: Install remaining packages
+  apt:
+    name: "{{ item.name }}"
+    state: present
+    force_apt_get: true
+    update_cache: true
+  loop: "{{ packages }}"

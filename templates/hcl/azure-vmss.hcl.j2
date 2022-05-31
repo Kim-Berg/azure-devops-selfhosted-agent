@@ -10,7 +10,7 @@ packer {
 variable "ansible_playbook_path" {
   type = string
   description = "Specifies where ansible playbooks are located"
-  default="../build_config"
+  default="../ansible"
 }
 
 variable "client_id" {
@@ -158,14 +158,6 @@ build {
           image_gallery_name = "{{ dsc.builds_gallery_name }}"
           image_gallery_resource_group = "{{ dsc.builds_gallery_resource_group }}"
 {% endif %}
-{%- for vmss in dsc.target_scale_sets %}      
-          vmss_{{ loop.index }}_name = "{{ vmss.name }}"
-          vmss_{{ loop.index }}_resource_group = "{{ vmss.resource_group }}"
-{% if dsc.builds_linux_enable == true %}
-          image_{{ loop.index }}_name = local.green_img_linux
-{% endif %}
-          image_{{ loop.index }}_resource_group = "{{ dsc.builds_target_resource_group }}"
-{%- endfor %}
       }
   }
 }

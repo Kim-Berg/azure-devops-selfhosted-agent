@@ -74,8 +74,8 @@ with open(DESIRED_STATE_PATH, 'r') as stream:
     dsc = flatten(load(stream.read(), Loader=Loader))
     pprint(dsc)
 
-    cac_path=os.path.abspath(os.path.join('.', 'os_config'))
-    iac_path=os.path.abspath(os.path.join('.', 'builds'))
+    cac_path=os.path.abspath(os.path.join('.', 'ansible'))
+    iac_path=os.path.abspath(os.path.join('.', 'packer'))
     scripts_path=os.path.abspath(os.path.join('.', 'scripts'))
 
     build = TemplateWrapper(

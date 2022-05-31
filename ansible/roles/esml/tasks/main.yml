@@ -1,5 +1,15 @@
 ---
 # tasks file for esml
+
+# https://github.com/georchestra/ansible/issues/55
+- name: install acl package
+  apt:
+    name: acl
+    state: latest
+    force_apt_get: true
+    update_cache: true
+  when: (ansible_facts['distribution_version'] == "20.04")
+
 - name: clone the esml repository
   ansible.builtin.git:
     repo: "{{ git_repo }}"
@@ -13,10 +23,11 @@
     url: "{{ item.url }}"
     dest: /tmp
     mode: '0555'
+    owner: "{{ conda_user }}"
     force: yes
   loop: "{{ anaconda_packages }}"
 
-- name: Get sha256 sum of script
+- name: stat sha256 sum of script
   stat:
     path: /tmp/{{ item.url.split('/') | last }}
     checksum_algorithm: sha256
@@ -24,9 +35,9 @@
   register: shasum_stat
   loop: "{{ anaconda_packages }}"
 
-- name: Verify sha256sum of script before execution.
+- name: Verify sha256sum of script with checksum
   fail:
-    msg: "Failure, file /tmp/{{ item.url.split('/') | last }} is not correct."
+    msg: "Failure, file /tmp/{{ item.url.split('/') | last }} checksum does not match."
   when: item[1].stat.checksum != "{{ item[0].checksum }}"
   with_together: 
   - "{{ anaconda_packages }}"
@@ -36,6 +47,7 @@
   ansible.builtin.command: "bash /tmp/{{ item.url.split('/') | last }} -b -u -p {{ item.installation_prefix }}"
   args:
     chdir: /tmp
+  become_user: "{{ conda_user }}"
   loop: "{{ anaconda_packages }}"
   
 - name: activate anaconda
@@ -55,6 +67,6 @@
   shell: ". {{ item.installation_prefix }}/bin/activate && bash automl_setup_linux.sh" 
   args:
     executable: /bin/bash
-    chdir: "{{ git_clone_to_folder }}/environment_setup/unattended_linux_install_for_mlops"
+    chdir: "{{ git_clone_to_folder }}/environment_setup"
   become_user: "{{ conda_user }}"
   loop: "{{ anaconda_packages }}"
