@@ -11,7 +11,8 @@ Create a VM image and publish it to a image gallery from a single file
                 ||----w |
                 ||     ||
 ```
-
+# Architecture
+![alt text](docs/images/overview.png "Title")
 # Features
 
 * Bootstrap packer and ansible from a single desired state
@@ -54,6 +55,8 @@ After an image has been published to the compute gallery you can create an VMSS 
 4. e voilà 
 
 
+
+
 # TODO
 
 * Create reference docs for desired_state.yaml
@@ -62,4 +65,4 @@ After an image has been published to the compute gallery you can create an VMSS 
 
 1. Creating VMSS based self hosted Azure DevOps agents: https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/scale-set-agents?view=azure-devops
 
-![alt text](docs/images/overview.png "Title")
+
