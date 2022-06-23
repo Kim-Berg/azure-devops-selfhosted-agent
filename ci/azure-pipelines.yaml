@@ -16,7 +16,7 @@ variables:
     # ------ Do change variables below --------
     # See "service connections" under Azure DevOps organization settings
     - name: service_connection
-      value: 'azure-devops-demo-sp'
+      value: 'epiroc-esml-dev'
 
 stages:
   - stage: SwapAndReplace
@@ -44,9 +44,9 @@ stages:
           script: |
             ls -la $(Build.Repository.LocalPath)
             echo "---"
-            ls -la $(Build.Repository.LocalPath)/build_config
+            ls -la $(Build.Repository.LocalPath)/ansible
             echo "---"
-            ls -la $(Build.Repository.LocalPath)/packer
+            ls -la $(Build.Repository.LocalPath)/builds
             echo "---"
             ls -la $(Build.Repository.LocalPath)/scripts
 
@@ -65,30 +65,30 @@ stages:
         displayName: 'Packer version'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/packer/azure-vmss.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: version
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer init'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/packer/azure-vmss.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: init
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer validate'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/packer/azure-vmss.pkr.hcl'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
           command: validate
-          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'    
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/ansible'    
 
       - task: riezebosch.Packer.Packer.Packer@1
         displayName: 'Packer build'
         inputs:
           azureSubscription: '$(service_connection)'
-          templatePath: '$(Build.Repository.LocalPath)/packer/azure-vmss.pkr.hcl'
-          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/build_config'
+          templatePath: '$(Build.Repository.LocalPath)/builds/azure-vmss.pkr.hcl'
+          variables: 'ansible_playbook_path=$(Build.Repository.LocalPath)/ansible'
           force: true
 
       - task: ArchiveFiles@2
